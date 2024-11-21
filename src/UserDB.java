@@ -1,3 +1,4 @@
+package src;
 import java.io.FileWriter; 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -7,8 +8,7 @@ import java.util.Base64;
 
 public class UserDB {
     // file names to read | write from | to
-    private final static String LOGIN_FILE = "login.txt";
-
+    private final static String LOGIN_FILE = "files/login.txt";
 
     /*
      *  Checks if the users password exists within the user data base

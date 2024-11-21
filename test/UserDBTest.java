@@ -1,4 +1,8 @@
+package test;
 import org.junit.Test;
+
+import src.UserDB;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
