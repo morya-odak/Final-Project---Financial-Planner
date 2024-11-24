@@ -99,6 +99,7 @@ public final class Password {
         boolean hasDigit = false;
         boolean hasUpper = false;
         boolean hasLower = false;
+        boolean hasSpace = false;
 
         for (int i = 0; i < password.length(); i++){
             char entry = password.charAt(i);
@@ -111,8 +112,11 @@ public final class Password {
             else if (Character.isDigit(entry)){
                 hasDigit = true;
             }
+            else if (entry == ' '){
+                hasSpace = true;
+            }
         }
 
-        return hasDigit && hasUpper && hasLower;
+        return hasDigit && hasUpper && hasLower && (!hasSpace); 
     }
 }
