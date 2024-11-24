@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 
@@ -8,8 +10,8 @@ import src.Password;
 
 public class LoginPasswordLabel extends JLabel implements LoginObserver{
     public LoginPasswordLabel() {
-        super("[Required: 12 characters | 1 upper case | 1 lower case | 1 number]"); 
-        this.setSize(250, 100);
+        super("[12 characters | 1 upper case | 1 lower case | 1 number]");
+        this.setPreferredSize(new Dimension(350, 40));
     }
 
     /*
@@ -33,11 +35,11 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver{
         if (!(Password.isValid(password))){
             // set color to red
             this.setForeground(Color.RED);
-            text.append("INVALID PASSWORD: |");
+            text.append("|");
 
             // check for invalid length
             if (password.length() < 12){
-                text.append("too few characters (12 character limit) |");
+                text.append("too few characters |");
             }
 
             // scan string
@@ -65,17 +67,17 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver{
 
             // update text if no lower case
             if (!hasLower){
-                text.append("need at least one lower case |");
+                text.append("at least one lower case |");
             }
 
             // update text if no upper case
             if (!hasUpper){
-                text.append("need at least one upper case |");
+                text.append("at least one upper case |");
             }
 
             // update text if no number
             if (!hasNum){
-                text.append("need at least one number |");
+                text.append("at least one number |");
             }
 
             // update text if space

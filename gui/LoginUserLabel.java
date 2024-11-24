@@ -10,7 +10,7 @@ public class LoginUserLabel extends JLabel implements LoginObserver{
     public LoginUserLabel(){
         // empty text, only should appear when there is an invalid username
         super("");
-        this.setSize(250, 100);
+        this.setSize(350, 100);
     }
 
     /*
