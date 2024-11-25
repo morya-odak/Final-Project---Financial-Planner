@@ -3,9 +3,6 @@ package gui.login_signup_page;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import src.Password;
-import src.UserDB;
-
 public class LoginController implements ActionListener{
     private LoginModel model;
 
@@ -22,14 +19,9 @@ public class LoginController implements ActionListener{
         if (commands.length == 3){
             String username = commands[1];
             String password = commands[2];
-            if (!UserDB.checkUser(username) && Password.isValid(password)){
-                UserDB.addUser(username, password);
-            }
 
             // invalid sign up
-            else {
-                model.notifyObservers(username + ":" + password);
-            }
+            model.notifyObservers(username + ":" + password);
         }
 
         // user tries logging in 

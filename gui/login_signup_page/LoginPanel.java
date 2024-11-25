@@ -1,13 +1,15 @@
 package gui.login_signup_page;
 
 
+import java.awt.CardLayout;
 import java.awt.Color;
 
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class LoginPanel extends EntryPanel {
-    public LoginPanel(int width, int height){
-        super("Login to Your Account", width, height, Color.WHITE, Color.LIGHT_GRAY);
+    public LoginPanel(int width, int height, JPanel parent, CardLayout cardLayout){
+        super("Login to Your Account", parent, cardLayout, width, height, Color.WHITE, Color.LIGHT_GRAY);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package gui.login_signup_page;
 import javax.swing.*;
 
+import src.UserDB;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,10 +46,16 @@ public abstract class EntryPanel extends JPanel{
     boolean userEntryPressed = false;
     boolean passwordEntryPressed = false;
 
-    public EntryPanel(String titleText, int width, int height, Color a, Color b){
+    // control for the parent
+    protected final JPanel PARENT; 
+    protected final CardLayout CARD_LAYOUT;
+
+    public EntryPanel(String titleText, JPanel parent, CardLayout cardLayout, int width, int height, Color a, Color b){
         super();
         WIDTH = width;
         HEIGHT = height;
+        PARENT = parent;
+        CARD_LAYOUT = cardLayout;
         setLayout(layout);
         controller = new LoginController(new LoginModel());
         BACKGROUND_COLOR = a;
@@ -157,7 +165,17 @@ public abstract class EntryPanel extends JPanel{
         loginButton.addActionListener(new ActionListener () {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String command = userEntry.getText() + ":" + passwordEntry.getText();
+                // username & password
+                String username = userEntry.getText();
+                String password = passwordEntry.getText();
+
+                // check for valid entry
+                if (UserDB.checkLogin(username, password)){
+                    CARD_LAYOUT.next(PARENT);
+                }
+
+                // if here, update the labels
+                String command = username + ":" + password;
                 loginButton.setActionCommand(command);
                 loginButton.addActionListener(controller);
             }

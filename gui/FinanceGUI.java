@@ -4,8 +4,6 @@ import javax.swing.*;
 import gui.login_signup_page.LSPanel;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class FinanceGUI extends JFrame {
     // dimensions of page
@@ -14,7 +12,6 @@ public class FinanceGUI extends JFrame {
     private static final int HEIGHT = (int)size.getHeight();
 
     public FinanceGUI() {
-        System.out.println(size);
         setTitle("Finance 335");
         setSize(WIDTH, HEIGHT);
         setUp();
@@ -23,15 +20,23 @@ public class FinanceGUI extends JFrame {
     }
 
     private void setUp() {
-        // main panel
-        add(new LSPanel(WIDTH, HEIGHT));
+        // card layout
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardsPanel = new JPanel(cardLayout);
 
-        // Add window closing listener
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent windowEvent) {
-                System.exit(0);
-            }
-        });
+        // create panels
+        JPanel panel1 = new LSPanel(WIDTH, HEIGHT, cardsPanel, cardLayout);
+        JPanel panel2 = new JPanel();
+        panel2.add(new JLabel("PANEL 2"));
+
+        // add panels
+        cardsPanel.add(panel1, "Panel 1");
+        cardsPanel.add(panel2, "Panel 2");
+
+        // add to frame
+        add(cardsPanel);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
 
