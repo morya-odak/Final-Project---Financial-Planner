@@ -32,8 +32,9 @@ public abstract class EntryPanel extends JPanel{
 
     // password & username
     private LoginPasswordLabel passwordLabel;
-    private JTextField passwordEntry;
+    private JPasswordField passwordEntry;
     private JTextField userEntry;
+    private boolean isPasswordVisible = false;
 
     // button
     protected JButton loginButton;
@@ -129,7 +130,8 @@ public abstract class EntryPanel extends JPanel{
         // set up password | add password
         passwordLabel = new LoginPasswordLabel();
         passwordLabel.setFont(LABEL_FONT);
-        passwordEntry = new JTextField("PASSWORD: ", 20);
+        passwordEntry = new JPasswordField("PASSWORD: ", 20);
+        passwordEntry.setEchoChar('*');
         passwordEntry.setBackground(ENTRY_COLOR);
         passwordEntry.setForeground(ENTRY_START_COLOR);
         passwordEntry.setFont(ENTRY_FONT);
@@ -138,8 +140,10 @@ public abstract class EntryPanel extends JPanel{
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.CENTER;
         add(passwordLabel, gbc);
-
-        // listens for user interaction
+        gbc.gridy = 5;
+        add(setHideShowButton(), gbc);
+        
+        // listens for user interaction by pressing text box
         passwordEntry.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
@@ -150,6 +154,40 @@ public abstract class EntryPanel extends JPanel{
                 }
             }
         });
+    }
+
+    /*
+     *  adds the show/hide button to the password entry box
+     * 
+     *  @return JButton - the button with the proper action listeners for
+     *                    toggling on/off
+     */
+    private JButton setHideShowButton(){
+        JButton toggle = new JButton("SHOW");
+        toggle.setFont(ENTRY_FONT);
+
+        // listens for user interaction for toggling sight of characters
+        toggle.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // password can not be seen
+                if (!isPasswordVisible){
+                    passwordEntry.setEchoChar((char) 0);
+                    toggle.setText("HIDE");
+                    isPasswordVisible = !isPasswordVisible;
+                }
+
+                // password can be seen
+                else{
+                    passwordEntry.setEchoChar('*');
+                    toggle.setText("SHOW");
+                    isPasswordVisible = !isPasswordVisible;
+                }
+            }
+        });
+
+        return toggle;
     }
 
     /*
@@ -182,7 +220,7 @@ public abstract class EntryPanel extends JPanel{
         });
 
         // add to grid
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         add(loginButton, gbc);
     }
 }

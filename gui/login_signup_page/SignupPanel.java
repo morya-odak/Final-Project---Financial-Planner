@@ -90,7 +90,7 @@ public class SignupPanel extends EntryPanel {
             }
         });
 
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         add(loginButton, gbc);
     }
 }
