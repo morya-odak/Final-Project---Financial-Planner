@@ -46,7 +46,6 @@ public final class Password {
 
         // scrub the byte array for any '\n' characters
         for (int i = 0; i < saltLength; i++){
-            System.out.println(salt[i]);
             if (salt[i] == 10){ 
                 salt[i] = 42;
             }

@@ -1,4 +1,4 @@
-package gui;
+package gui.login_signup_page;
 
 import java.awt.Color;
 
@@ -10,7 +10,6 @@ public class LoginUserLabel extends JLabel implements LoginObserver{
     public LoginUserLabel(){
         // empty text, only should appear when there is an invalid username
         super("");
-        this.setSize(350, 100);
     }
 
     /*
@@ -24,13 +23,13 @@ public class LoginUserLabel extends JLabel implements LoginObserver{
         String [] vals = val.split(":");
         String username = vals[0];
 
-        if (UserDB.checkUser(username)){
-            this.setForeground(Color.RED);
-            this.setText("INVALID USERNAME: User already exists, try a new username");
+        if (!UserDB.checkUser(username)){
+            this.setForeground(Color.BLACK);
+            this.setText("Username does not exist");
         }
         else {
-            this.setForeground(Color.GREEN);
-            this.setText("Valid username");
+            this.setForeground(Color.BLACK);
+            this.setText("User exists");
         }
     }  
 }

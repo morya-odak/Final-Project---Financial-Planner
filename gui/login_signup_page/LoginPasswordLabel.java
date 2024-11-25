@@ -1,8 +1,6 @@
-package gui;
+package gui.login_signup_page;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.JLabel;
 
@@ -11,7 +9,6 @@ import src.Password;
 public class LoginPasswordLabel extends JLabel implements LoginObserver{
     public LoginPasswordLabel() {
         super("[12 characters | 1 upper case | 1 lower case | 1 number]");
-        this.setPreferredSize(new Dimension(350, 40));
     }
 
     /*
@@ -34,7 +31,7 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver{
         // invalid text, update as necessary
         if (!(Password.isValid(password))){
             // set color to red
-            this.setForeground(Color.RED);
+            this.setForeground(Color.BLACK);
             text.append("|");
 
             // check for invalid length
@@ -92,7 +89,7 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver{
 
         // valid password, update as necessary
         else {
-            this.setForeground(Color.GREEN);
+            this.setForeground(Color.BLACK);
             this.setText("Strong password");
         }
     }

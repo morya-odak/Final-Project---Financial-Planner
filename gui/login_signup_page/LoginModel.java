@@ -1,4 +1,4 @@
-package gui;
+package gui.login_signup_page;
 import java.util.ArrayList;
 
 public class LoginModel {

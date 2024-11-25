@@ -1,11 +1,15 @@
-package gui;
+package gui.login_signup_page;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 
 public abstract class EntryPanel extends JPanel{
+    // abstract methods for adding the user and username | login button
+    protected abstract LoginObserver setUser(JTextField a);
+
     // colors
     protected Color BACKGROUND_COLOR;
     protected Color ENTRY_COLOR;
@@ -13,12 +17,12 @@ public abstract class EntryPanel extends JPanel{
 
     // fonts
     private static Font TITLE_FONT;
-    private static Font ENTRY_FONT;
-    private static Font LABEL_FONT;
+    protected static Font ENTRY_FONT;
+    protected static Font LABEL_FONT;
 
     // border layout
     private final GridBagLayout layout = new GridBagLayout();
-    private final GridBagConstraints gbc = new GridBagConstraints();
+    protected final GridBagConstraints gbc = new GridBagConstraints();
 
     // dimensions
     private static int WIDTH;
@@ -27,15 +31,14 @@ public abstract class EntryPanel extends JPanel{
     // password & username
     private LoginPasswordLabel passwordLabel;
     private JTextField passwordEntry;
-    private LoginUserLabel userLabel;
     private JTextField userEntry;
 
     // button
-    private JButton loginButton;
+    protected JButton loginButton;
 
     // title & controller
     private JLabel title;
-    private LoginController controller;
+    protected LoginController controller;
 
     // if the fields were pressed
     boolean userEntryPressed = false;
@@ -44,6 +47,7 @@ public abstract class EntryPanel extends JPanel{
     public EntryPanel(String titleText, int width, int height, Color a, Color b){
         super();
         WIDTH = width;
+        HEIGHT = height;
         setLayout(layout);
         controller = new LoginController(new LoginModel());
         BACKGROUND_COLOR = a;
@@ -62,9 +66,10 @@ public abstract class EntryPanel extends JPanel{
     private void setUp(String titleText){
         setFonts();
         setTitle(titleText);
-        setUser();
+        userEntry = new JTextField("USERNAME: ", 20);
+        LoginObserver userLabel = setUser(userEntry);
         setPassword();
-        setSubmit();
+        setSubmit(userEntry, passwordEntry);
 
         // add observers to the controller
         controller.addObserver(userLabel);
@@ -109,36 +114,6 @@ public abstract class EntryPanel extends JPanel{
     }
 
     /*
-     *  sets the user aspect of the panel, this includes the username text field
-     *  along with the username label
-     */
-    private void setUser(){
-        // set up username | add username
-        userLabel = new LoginUserLabel();
-        userLabel.setFont(LABEL_FONT);
-        userEntry = new JTextField("USERNAME: ", 20);
-        userEntry.setBackground(ENTRY_COLOR);
-        userEntry.setFont(ENTRY_FONT);
-        userEntry.setForeground(ENTRY_START_COLOR);
-        gbc.gridy = 1;
-        add(userEntry, gbc);
-        gbc.gridy = 2;
-        add(userLabel, gbc);
-
-        // listens for user interaction
-        userEntry.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                if (!userEntryPressed){
-                    userEntry.setText("");
-                    userEntry.setForeground(Color.BLACK);
-                    userEntryPressed = true;
-                }
-            }
-        });
-    }
-
-    /*
      *  sets the password aspect of the panel, this includes the password text field
      *  along with the password label
      */
@@ -153,6 +128,7 @@ public abstract class EntryPanel extends JPanel{
         gbc.gridy = 3;
         add(passwordEntry, gbc);
         gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
         add(passwordLabel, gbc);
 
         // listens for user interaction
@@ -171,7 +147,7 @@ public abstract class EntryPanel extends JPanel{
     /*
      *  sets the submit button along with action listener for the user
      */
-    private void setSubmit(){
+    protected void setSubmit(JTextField userEntry, JTextField passwordEntry){
         // add submit button
         loginButton = new JButton("LOGIN");
         loginButton.setFont(ENTRY_FONT);
