@@ -1,20 +1,16 @@
 package gui.login_signup_page;
-
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+import gui.FinanceGUI;
 import src.Password;
 import src.UserDB;
 
 public class SignupPanel extends EntryPanel {
-    public SignupPanel(int width, int height, JPanel parent, CardLayout cardLayout){
-        super("Signup for Financial Tracking!", parent, cardLayout, width, height, new Color(255, 0, 92), new Color(255, 185, 210));
+    public SignupPanel(){
+        super("Signup for Financial Tracking!", new Color(255, 0, 92), new Color(255, 185, 210));
     }
 
     /*
@@ -29,14 +25,14 @@ public class SignupPanel extends EntryPanel {
     @Override
     protected LoginObserver setUser(JTextField userEntry) {
         SignupUserLabel userLabel = new SignupUserLabel();
-        userLabel.setFont(LABEL_FONT);
+        userLabel.setFont(FinanceGUI.LABEL_FONT);
         userEntry.setBackground(ENTRY_COLOR);
-        userEntry.setFont(ENTRY_FONT);
+        userEntry.setFont(FinanceGUI.ENTRY_FONT);
         userEntry.setForeground(ENTRY_START_COLOR);
-        gbc.gridy = 1;
-        add(userEntry, gbc);
-        gbc.gridy = 2;
-        add(userLabel, gbc);
+        GBC.gridy = 1;
+        add(userEntry, GBC);
+        GBC.gridy = 2;
+        add(userLabel, GBC);
 
         // listens for user interaction
         userEntry.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -65,7 +61,7 @@ public class SignupPanel extends EntryPanel {
     @Override
     protected void setSubmit(JTextField userEntry, JTextField passwordEntry) {
         loginButton = new JButton("SIGN UP");
-        loginButton.setFont(ENTRY_FONT);
+        loginButton.setFont(FinanceGUI.ENTRY_FONT);
         loginButton.setBackground(ENTRY_COLOR);
 
         loginButton.addActionListener(new ActionListener() {
@@ -78,7 +74,7 @@ public class SignupPanel extends EntryPanel {
                 // check for valid sign-up
                 if (!UserDB.checkUser(username) && Password.isValid(password)){
                     UserDB.addUser(username, password);
-                    CARD_LAYOUT.next(PARENT);
+                    FinanceGUI.CARD_LAYOUT.next(FinanceGUI.CARDS_PANEL);
                 }
 
                 // invalid sign-up, update the labels
@@ -90,7 +86,7 @@ public class SignupPanel extends EntryPanel {
             }
         });
 
-        gbc.gridy = 6;
-        add(loginButton, gbc);
+        GBC.gridy = 6;
+        add(loginButton, GBC);
     }
 }

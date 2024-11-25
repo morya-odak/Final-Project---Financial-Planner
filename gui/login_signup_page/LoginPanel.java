@@ -1,28 +1,33 @@
 package gui.login_signup_page;
-
-
-import java.awt.CardLayout;
 import java.awt.Color;
-
-import javax.swing.JPanel;
+import gui.FinanceGUI;
 import javax.swing.JTextField;
 
 public class LoginPanel extends EntryPanel {
-    public LoginPanel(int width, int height, JPanel parent, CardLayout cardLayout){
-        super("Login to Your Account", parent, cardLayout, width, height, Color.WHITE, Color.LIGHT_GRAY);
+    public LoginPanel(){
+        super("Login to Your Account", Color.WHITE, Color.LIGHT_GRAY);
     }
 
+    /*
+     *  sets the user for the GUI which includes the user text box along with 
+     *  the user label that has the status of the username, if it exists or not
+     *  
+     *  @param userEntry (JTextField) - the text box for the username
+     * 
+     *  @return LoginObserver - instance of the LoginObserver interface, a
+     *                          label for the user status
+     */
     @Override
     protected LoginObserver setUser(JTextField userEntry){
         LoginUserLabel userLabel = new LoginUserLabel();
-        userLabel.setFont(LABEL_FONT);
+        userLabel.setFont(FinanceGUI.LABEL_FONT);
         userEntry.setBackground(ENTRY_COLOR);
-        userEntry.setFont(ENTRY_FONT);
+        userEntry.setFont(FinanceGUI.ENTRY_FONT);
         userEntry.setForeground(ENTRY_START_COLOR);
-        gbc.gridy = 1;
-        add(userEntry, gbc);
-        gbc.gridy = 2;
-        add(userLabel, gbc);
+        GBC.gridy = 1;
+        add(userEntry, GBC);
+        GBC.gridy = 2;
+        add(userLabel, GBC);
 
         // listens for user interaction
         userEntry.addMouseListener(new java.awt.event.MouseAdapter() {
