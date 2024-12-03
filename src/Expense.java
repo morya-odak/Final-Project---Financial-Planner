@@ -20,7 +20,7 @@ public class Expense implements Serializable {
         this.date = date;
         this.category = category;
         this.amount = amount;
-        this.description = (description == null) ? "" : description;
+        this.description = description;
     }
 
     // Getters

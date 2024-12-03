@@ -5,11 +5,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -141,7 +143,7 @@ public class UserDB implements Serializable{
 
                 // write to file
                 fw.write(username + ":" + newPassword + ":" + saltString + "\n");
-                saveToFile(new User(username));
+                saveUser(new User(username));
                 currUser = username;
             }
             catch (NoSuchAlgorithmException a){
@@ -159,8 +161,8 @@ public class UserDB implements Serializable{
      *  @param user (User) - the user object which contains a username, 
      *                       a collection of expenses, and a budget
      */
-    private static void saveToFile(User user) {
-        HashMap<String, User> res = getUsers(); 
+    private static void saveUser(User user) {
+        HashMap<String, User> res = loadUsers(); 
         if (res == null) res = new HashMap<>(); 
 
         res.put(user.getUsername(), user); 
@@ -178,7 +180,7 @@ public class UserDB implements Serializable{
      *                                    user object
      */
     @SuppressWarnings("unchecked")
-    private static HashMap<String, User> getUsers() {
+    private static HashMap<String, User> loadUsers() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
             return (HashMap<String, User>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -186,21 +188,30 @@ public class UserDB implements Serializable{
             return null;
         }
     }
-    
-    /*
-     *  Loads user from the DB
-     * 
-     *  @returns User - user object from the hashmap in the 
-     */
-    public static User getUser(){
-        HashMap <String, User> users = getUsers();
-        if (currUser != null){
-            return users.get(currUser);
-        }
-        return null;
+
+    public static void addExpense(Expense e){
+        User user = loadUsers().get(currUser);
+        user.getExpenseManager().addExpense(e);
+        saveUser(user);
     }
 
+    public static void editExpense(){
+        // TODO
+    }
+
+    public static void deleteExpense(Expense e){
+        User user = loadUsers().get(currUser);
+        user.getExpenseManager().removeExpense(e);
+        saveUser(user);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static ArrayList <Expense> getExpenses(){
+        return (ArrayList) loadUsers().get(currUser).getExpenseManager().getAllExpenses();
+    }
+    
     public static void main(String [] args){
-        
+        HashMap <String, User> users = loadUsers();
+        System.out.println(users.get("mrafko").getExpenseManager().toString());
     }
 }

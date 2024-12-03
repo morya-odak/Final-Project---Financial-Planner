@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 
 
 public class ExpenseValidator {
-    public static void validate(String date, Category category, double amount) {
+    public static void validate(String date, Category category, double amount){
         if (!isValidDate(date)) {
             throw new IllegalArgumentException("Invalid date format. Expected YYYY-MM-DD.");
         }
