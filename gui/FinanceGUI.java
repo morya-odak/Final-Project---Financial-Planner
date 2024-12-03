@@ -1,6 +1,7 @@
 package gui;
 import javax.swing.*;
 import gui.login_signup_page.LSPanel;
+import gui.main_page.MainPanel;
 import java.awt.*;
 import java.io.FileInputStream;
 
@@ -51,7 +52,7 @@ public class FinanceGUI extends JFrame {
     private void setUp() {
         // create panels
         JPanel panel1 = new LSPanel();
-        JPanel panel2 = new JPanel();
+        JPanel panel2 = new MainPanel();
         panel2.add(new JLabel("PANEL 2"));
 
         // add panels

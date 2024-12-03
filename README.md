@@ -1,44 +1,44 @@
-**User Management:**
+**User Management: DONE**
 The application should implement a user registration and login system. Users should be able to
 create an account with a unique username and password. Ensure that user data, especially
 passwords, are stored securely on device. The system should support multiple user profiles,
 allowing different individuals to use the application on the same device without accessing each
 other's financial information.
 
-**Expense Tracking:**
+**Expense Tracking: NEED GUI**
 Implement a robust expense tracking system that allows users to add, edit, and delete their
 expenses. Each expense should include details such as the amount, date, and category. Provide at
 least five predefined expense categories (e.g., food, transportation, entertainment, utilities, and
 miscellaneous). Users should be able to view their expenses and filter them based on date ranges
 or categories.
 
-**Budget Management:**
+**Budget Management: NEED GUI**
 Create a budget management feature that enables users to set monthly budgets for different
 expense categories. The application should provide a visual representation of budget progress,
 such as a progress bar, for each category. Implement an alert system that notifies users when they
 have spent 80% or more of their allocated budget in any category. This feature should help users
 stay on track with their financial goals.
 
-**Financial Reports:**
+**Financial Reports NEED GUI:**
 Develop a reporting system that generates monthly spending summaries. The report should
 include total expenses, a breakdown by category, and a comparison with the set budgets.
 Additionally, create at least one graphical visualization of spending patterns, such as a pie chart
 showing the proportion of expenses in each category. These reports should provide users with
 insights into their spending habits.
 
-**User Interface:**
+**User Interface: DONE**
 Design and implement a user-friendly interface using Swing components. The GUI should
 include a dashboard displaying the user's current financial status, forms for adding and editing
 expenses, a budget setting and monitoring interface, and a dedicated view for financial reports
 and visualizations. Ensure that the interface is intuitive and easy to navigate.
 
-**Data Persistence:**
+**Data Persistence: DONE**
 Implement a data persistence mechanism using file I/O operations. The application should be
 able to save user data, including account information, expenses, and budgets, to a file. Similarly,
 it should be able to load this data when the user logs in. Ensure that the data is stored in a
 structured format that can be easily read and written.
 
-**Technical Requirements:**
+**Technical Requirements: DONE**
 Utilize object-oriented programming principles throughout your implementation. Design
 appropriate class hierarchies, demonstrating the use of inheritance, polymorphism, and
 encapsulation. Implement robust exception handling to manage invalid inputs, file operation

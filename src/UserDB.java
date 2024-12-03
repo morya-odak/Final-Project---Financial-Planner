@@ -1,14 +1,21 @@
 package src;
 import java.io.FileWriter; 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.Base64;
 
-public class UserDB {
+public class UserDB implements Serializable{
     // file names to read | write from | to
     private final static String LOGIN_FILE = "files/login.txt";
+    private final static String DATA_FILE = "files/userdata.txt";
+    private static String currUser = null;
 
     /*
      *  Checks if the users password exists within the user data base
@@ -115,9 +122,11 @@ public class UserDB {
                 byte [] salt = Password.generateSalt();
                 String newPassword = Password.generatePassword(password, salt);
                 String saltString = Base64.getEncoder().withoutPadding().encodeToString(salt);
+                currUser = username;
 
                 // write to file
                 fw.write(username + ":" + newPassword + ":" + saltString + "\n");
+                saveToFile(new User(username));
             }
             catch (NoSuchAlgorithmException a){
                 a.printStackTrace();
@@ -126,5 +135,40 @@ public class UserDB {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    /*
+     *  Adds the user to the DB given the User object
+     *  
+     *  @param user (User) - the user object which contains a username, 
+     *                       a collection of expenses, and a budget
+     */
+    private static void saveToFile(User user) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+            out.writeObject(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     *  Loads the user from the DB given the username
+     * 
+     *  @returns User - a User object for 
+     */
+    public static User loadFromFile() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+            return (User) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void main(String [] args){
+        UserDB.saveToFile(new User("mrafko"));
+        UserDB.saveToFile(new User("dan"));
+        User res = UserDB.loadFromFile();
+        System.out.println(res.getUsername());
     }
 }
