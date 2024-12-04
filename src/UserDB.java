@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -195,14 +194,28 @@ public class UserDB implements Serializable{
         saveUser(user);
     }
 
-    public static void editExpense(){
-        // TODO
+    public static boolean udpateExpense(Expense e, String newDescription){
+        User user = loadUsers().get(currUser);
+        for (Expense expense : user.getExpenseManager().getAllExpenses()){
+            if (expense.equals(e)){
+                expense.updateDescription(newDescription);
+                saveUser(user);
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static void deleteExpense(Expense e){
+    public static boolean deleteExpense(Expense e){
         User user = loadUsers().get(currUser);
-        user.getExpenseManager().removeExpense(e);
-        saveUser(user);
+        for (Expense expense : user.getExpenseManager().getAllExpenses()){
+            if (expense.equals(e)){
+                user.getExpenseManager().removeExpense(e);
+                saveUser(user);
+                return true;
+            }
+        }
+        return false;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
