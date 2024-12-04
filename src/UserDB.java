@@ -1,14 +1,36 @@
 package src;
 import java.io.FileWriter; 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.Base64;
+import java.util.HashMap;
 
-public class UserDB {
+public class UserDB implements Serializable {
     // file names to read | write from | to
     private final static String LOGIN_FILE = "files/login.txt";
+    private final static String DATA_FILE = "files/userdata.txt";
+    private static String currUser = null;
+
+    // adds the hashmap if necessary
+    static {
+        File file = new File(DATA_FILE);
+        if (file.exists() && file.length() == 0){
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+                HashMap <String, User> users = new HashMap <String, User> ();
+                out.writeObject(users);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /*
      *  Checks if the users password exists within the user data base
@@ -42,6 +64,7 @@ public class UserDB {
                     try {
                         hashedPassword = Password.generatePassword(password, fSalt);
                         if (hashedPassword.equals(fPassword)){
+                            currUser = username;
                             return true;
                         }
                     }
@@ -118,6 +141,8 @@ public class UserDB {
 
                 // write to file
                 fw.write(username + ":" + newPassword + ":" + saltString + "\n");
+                saveToFile(new User(username));
+                currUser = username;
             }
             catch (NoSuchAlgorithmException a){
                 a.printStackTrace();
@@ -126,5 +151,57 @@ public class UserDB {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    /*
+     *  Adds the user to the DB given the User object
+     *  
+     *  @param user (User) - the user object which contains a username, 
+     *                       a collection of expenses, and a budget
+     */
+    private static void saveToFile(User user) {
+        HashMap<String, User> res = getUsers(); 
+        if (res == null) res = new HashMap<>(); 
+
+        res.put(user.getUsername(), user); 
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+            out.writeObject(res); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     *  Loads users from the DB 
+     *  
+     *  @returns HashMap <String, User> - a hashmap of usernames mapped to the 
+     *                                    user object
+     */
+    @SuppressWarnings("unchecked")
+    private static HashMap<String, User> getUsers() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+            return (HashMap<String, User>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /*
+     *  Loads user from the DB
+     * 
+     *  @returns User - user object from the hashmap in the 
+     */
+    public static User getUser(){
+        HashMap <String, User> users = getUsers();
+        if (currUser != null){
+            return users.get(currUser);
+        }
+        return null;
+    }
+
+    public static void main(String [] args){
+        User user1 = new User("modak");
+        UserDB.saveToFile(user1);
     }
 }

@@ -1,49 +1,39 @@
 package src;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class User implements Serializable {
+/**
+ * This class is used to associate a username with an ExpenseManager class,
+ * allowing the client code to have access to all the Expenses associated
+ * with the user. 
+ */
+public class User implements Serializable{
+    private final String username; // The username associated with the user
+    private final ExpenseManager expenseManager; // The array list of expenses paid by the user. 
 
-    private final String username; 
-    private final ExpenseManager expenseManager; 
-
+    /**
+     * Creates an instance of the user class and initializes its ExpenseManager and username. 
+     * @param username
+     */
     public User(String username) {
         this.username = username;
         this.expenseManager = new ExpenseManager();
     }
 
+    /**
+     * Gets the username associated with the user object. 
+     * 
+     * @return (String) - The username of the user. 
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Returns the ExpenseManger object associated with the user. 
+     * 
+     * @return (ExpenseManager) - The ExpenseManager of the user
+     */
     public ExpenseManager getExpenseManager() {
         return expenseManager;
-    }
-
-    public void saveToFile(String filePath) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            out.writeObject(this);
-            System.out.println("User saved successfully!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static User loadFromFile(String filePath) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
-            return (User) in.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public String toString() {
-        return String.format("User [Username=%s, Expenses=%d]",
-                             username, expenseManager.getAllExpenses().size());
     }
 }
