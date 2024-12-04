@@ -1,10 +1,3 @@
-**User Management: DONE**
-The application should implement a user registration and login system. Users should be able to
-create an account with a unique username and password. Ensure that user data, especially
-passwords, are stored securely on device. The system should support multiple user profiles,
-allowing different individuals to use the application on the same device without accessing each
-other's financial information.
-
 **Expense Tracking: NEED GUI**
 Implement a robust expense tracking system that allows users to add, edit, and delete their
 expenses. Each expense should include details such as the amount, date, and category. Provide at

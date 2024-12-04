@@ -1,20 +1,16 @@
 package test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import src.Category;
-import src.Expense;
-import src.ExpenseManager;
-import src.ExpenseValidator;
+import Backend.Enums.Category;
+import Backend.User.Expense.Expense;
+import Backend.User.Expense.ExpenseManager;
+import Backend.User.Expense.ExpenseValidator;
 
 public class ExpenseTests {
 
