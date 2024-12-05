@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +44,25 @@ public class ExpenseManager implements Serializable {
      * @pre The expense object exists in the list. 
      * @param expense (Expense) - The expense object to be removed. 
      */
-    public void removeExpense(Expense expense) {
-        expenses.remove(expense);
+    public boolean removeExpense(Expense expense) {
+        for (Expense e : expenses){
+            if (e.equals(expense)){
+                expenses.remove(expense);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Update an expense
+    public boolean updateExpense(Expense expense, String newDescription){
+        for (Expense e: expenses){
+            if (expense.equals(e)){
+                expense.updateDescription(newDescription);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -65,7 +83,10 @@ public class ExpenseManager implements Serializable {
     public List<Expense> getExpensesByCategory(Category category) {
         return expenses.stream()
                 .filter(expense -> expense.getCategory() == category)
-                .collect(Collectors.toList());
+                .collect(Collectors.collectingAndThen(
+                    Collectors.toList(),
+                    Collections::unmodifiableList
+                ));
     }
 
     /**

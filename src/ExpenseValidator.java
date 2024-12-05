@@ -33,7 +33,7 @@ public class ExpenseValidator {
     }
 
     /**
-     * Checks if the date passed in is of the correct format and throws a DateTimeParseException
+     * Helper method to check if the date passed in is of the correct format and throws a DateTimeParseException
      * otherwise. 
      * 
      * @param date (String) - date an expense occured. 
