@@ -1,15 +1,12 @@
 package test;
-
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import src.Budget;
-import src.Category;
-import src.Expense;
-import src.ExpenseManager;
-import src.Month;
+import Backend.Enums.Category;
+import Backend.Enums.Month;
+import Backend.User.Budget.Budget;
+import Backend.User.Expense.Expense;
+import Backend.User.Expense.ExpenseManager;
 
 public class BudgetTest {
 
@@ -52,29 +49,17 @@ public class BudgetTest {
        
         budget.setBudget(Month.JANUARY, Category.FOOD, 120.0);
         budget.setBudget(Month.JANUARY, Category.ENTERTAINMENT, 50.0);
+       
+        boolean resultFood = budget.checkBudgetAlert(Month.JANUARY, Category.FOOD);
+        assertTrue(resultFood);
 
        
-        int resultFood = budget.checkBudgetAlert(Month.JANUARY, Category.FOOD);
-        assertEquals(1, resultFood);
+        boolean resultEntertainment = budget.checkBudgetAlert(Month.JANUARY, Category.ENTERTAINMENT);
+        assertTrue(resultEntertainment);
 
        
-        int resultEntertainment = budget.checkBudgetAlert(Month.JANUARY, Category.ENTERTAINMENT);
-        assertEquals(1, resultEntertainment);
-
-       
-        int resultTransportation = budget.checkBudgetAlert(Month.JANUARY, Category.TRANSPORTATION);
-        assertEquals(0, resultTransportation);
-    }
-
-    @Test
-    public void testDisplayBudgetProgress() {
-   
-        budget.setBudget(Month.JANUARY, Category.FOOD, 120.0);
-        budget.setBudget(Month.JANUARY, Category.ENTERTAINMENT, 50.0);
-
-        budget.displayBudgetProgress(Month.JANUARY, Category.FOOD);
-        budget.displayBudgetProgress(Month.JANUARY, Category.ENTERTAINMENT);
-        budget.displayBudgetProgress(Month.JANUARY, Category.TRANSPORTATION);
+        boolean resultTransportation = budget.checkBudgetAlert(Month.JANUARY, Category.TRANSPORTATION);
+        assertFalse(resultTransportation);
     }
 
     @Test

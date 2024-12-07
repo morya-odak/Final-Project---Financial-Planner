@@ -4,7 +4,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import src.Password;
+import Backend.Password;
 
 public class PasswordTest {
     
