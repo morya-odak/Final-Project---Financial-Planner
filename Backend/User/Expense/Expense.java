@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import Backend.Enums.Category;
+import Backend.Enums.Month;
 
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -58,6 +59,11 @@ public class Expense implements Serializable {
     public String toString() {
         return String.format("Expense [Date=%s, Category=%s, Amount=%.2f, Description=%s]",
                 date, category, amount, description);
+    }
+    
+    public boolean inMonth(Month month) {
+        LocalDate date = LocalDate.parse(this.date, DATE_FORMATTER);
+        return date.getMonth().toString().toLowerCase().equals(month.toString().toLowerCase());
     }
 
     @Override

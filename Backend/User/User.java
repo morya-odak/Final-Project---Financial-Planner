@@ -1,6 +1,7 @@
 package Backend.User;
 import java.io.Serializable;
 import java.util.List;
+
 import Backend.Enums.Category;
 import Backend.Enums.Month;
 import Backend.User.Budget.Budget;
@@ -8,7 +9,7 @@ import Backend.User.Expense.Expense;
 import Backend.User.Expense.ExpenseManager;
 
 public class User implements Serializable{
-    private static final long serialVersionUID = -7713301190514710036L;
+	private static final long serialVersionUID = 1L;
     private final String username; 
     private final Budget budget;
     private final ExpenseManager expenseManager;
@@ -17,6 +18,7 @@ public class User implements Serializable{
         this.username = username;
         this.expenseManager = new ExpenseManager();
         this.budget = new Budget(this.expenseManager);
+        System.out.println("User constructor called. Budget initialized.");
     }
 
     /*
@@ -42,9 +44,10 @@ public class User implements Serializable{
         return expenseManager.getExpensesByCategory(category);
     }
 
-    public List <Expense> getExpensesByDate(String startDate, String endDate){
+    public List<Expense> getExpensesByDateRange(String startDate, String endDate) {
         return expenseManager.getExpensesByDateRange(startDate, endDate);
     }
+
 
     public String expenseToString(){
         return expenseManager.toString();
@@ -67,6 +70,10 @@ public class User implements Serializable{
 
     public boolean checkBudgetAlert(Month yearMonth, Category category){
         return budget.checkBudgetAlert(yearMonth, category);
+    }
+    
+    public double getTotalSpentByCategoryAndMonth(Month yearMonth, Category category) {
+    	return budget.getTotalSpentByCategoryAndMonth(yearMonth, category);
     }
 
     /*

@@ -3,11 +3,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import Backend.UserDB;
 import Backend.Enums.Category;
 import Backend.User.Expense.Expense;
@@ -89,7 +91,7 @@ public class ExpensePanel extends JPanel{
         addExpense.setOpaque(true);
         addExpense.setBorderPainted(false);
 
-        addExpense.addActionListener(_ ->  handleExpense(true));
+        addExpense.addActionListener(e ->  handleExpense(true));
 
         GBC.gridy = 6;
         

@@ -6,10 +6,12 @@ import java.awt.GridBagLayout;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.Scanner;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import Backend.UserDB;
 import Backend.Enums.Category;
 import Backend.User.Expense.Expense;
@@ -55,10 +57,10 @@ public class IEPanel extends JPanel{
         btn.setBorderPainted(false);
 
         if (importData){
-            btn.addActionListener(_ -> importData());
+            btn.addActionListener(e -> importData());
         }
         else {
-            btn.addActionListener(_ -> exportData());
+            btn.addActionListener(e -> exportData());
         }
 
         return btn;
