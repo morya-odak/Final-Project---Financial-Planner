@@ -1,4 +1,4 @@
-package gui.login_signup_page;
+package Frontend.login_signup_page;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

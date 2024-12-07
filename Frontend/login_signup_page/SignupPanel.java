@@ -1,12 +1,13 @@
-package gui.login_signup_page;
+package Frontend.login_signup_page;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTextField;
-import gui.FinanceGUI;
-import src.Password;
-import src.UserDB;
+
+import Backend.Password;
+import Backend.UserDB;
+import Frontend.FinanceGUI;
 
 public class SignupPanel extends EntryPanel {
     public SignupPanel(){
@@ -74,6 +75,7 @@ public class SignupPanel extends EntryPanel {
                 // check for valid sign-up
                 if (!UserDB.checkUser(username) && Password.isValid(password)){
                     UserDB.addUser(username, password);
+                    UserDB.populateAll();
                     FinanceGUI.CARD_LAYOUT.next(FinanceGUI.CARDS_PANEL);
                 }
 

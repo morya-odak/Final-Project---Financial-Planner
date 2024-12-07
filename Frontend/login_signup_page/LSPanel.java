@@ -1,4 +1,4 @@
-package gui.login_signup_page;
+package Frontend.login_signup_page;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 

@@ -1,7 +1,7 @@
-package gui.login_signup_page;
+package Frontend.login_signup_page;
 import javax.swing.*;
-import gui.FinanceGUI;
-import src.UserDB;
+import Backend.UserDB;
+import Frontend.FinanceGUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -180,6 +180,7 @@ public abstract class EntryPanel extends JPanel{
 
                 // check for valid entry
                 if (UserDB.checkLogin(username, password)){
+                    UserDB.populateAll();
                     FinanceGUI.CARD_LAYOUT.next(FinanceGUI.CARDS_PANEL);
                 }
 

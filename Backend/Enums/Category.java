@@ -1,4 +1,4 @@
-package src;
+package Backend.Enums;
 
 public enum Category {
     FOOD,

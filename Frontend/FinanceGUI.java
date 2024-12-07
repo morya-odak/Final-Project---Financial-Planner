@@ -1,6 +1,7 @@
-package gui;
+package Frontend;
 import javax.swing.*;
-import gui.login_signup_page.LSPanel;
+import Frontend.login_signup_page.LSPanel;
+import Frontend.main_page.MainPanel;
 import java.awt.*;
 import java.io.FileInputStream;
 
@@ -22,12 +23,12 @@ public class FinanceGUI extends JFrame {
     // set fonts
     static {
         try {
-            FileInputStream titleStream = new FileInputStream("./fonts/Poppins-Bold.ttf");
+            FileInputStream titleStream = new FileInputStream("./Frontend/fonts/Poppins-Bold.ttf");
             TITLE_FONT = Font.createFont(Font.TRUETYPE_FONT, titleStream).deriveFont(40f);
             titleStream.close();
-            FileInputStream entryStream = new FileInputStream("./fonts/Poppins-Regular.ttf");
+            FileInputStream entryStream = new FileInputStream("./Frontend/fonts/Poppins-Regular.ttf");
             ENTRY_FONT = Font.createFont(Font.TRUETYPE_FONT, entryStream).deriveFont(20f);
-            FileInputStream entryStream2 = new FileInputStream("./fonts/Poppins-Regular.ttf");
+            FileInputStream entryStream2 = new FileInputStream("./Frontend/fonts/Poppins-Regular.ttf");
             LABEL_FONT = Font.createFont(Font.TRUETYPE_FONT, entryStream2).deriveFont(12f);
             entryStream.close();
             entryStream2.close();
@@ -51,7 +52,7 @@ public class FinanceGUI extends JFrame {
     private void setUp() {
         // create panels
         JPanel panel1 = new LSPanel();
-        JPanel panel2 = new JPanel();
+        JPanel panel2 = new MainPanel();
         panel2.add(new JLabel("PANEL 2"));
 
         // add panels

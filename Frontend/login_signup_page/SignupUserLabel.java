@@ -1,10 +1,10 @@
-package gui.login_signup_page;
+package Frontend.login_signup_page;
 
 import java.awt.Color;
 
 import javax.swing.JLabel;
 
-import src.UserDB;
+import Backend.UserDB;
 
 public class SignupUserLabel extends JLabel implements LoginObserver{
     public SignupUserLabel(){

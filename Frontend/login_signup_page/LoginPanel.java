@@ -1,7 +1,9 @@
-package gui.login_signup_page;
+package Frontend.login_signup_page;
 import java.awt.Color;
-import gui.FinanceGUI;
+
 import javax.swing.JTextField;
+
+import Frontend.FinanceGUI;
 
 public class LoginPanel extends EntryPanel {
     public LoginPanel(){
