@@ -1,4 +1,5 @@
 package Frontend.main_page.side_page;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,166 +16,237 @@ import Backend.Enums.Category;
 import Backend.User.Expense.Expense;
 import Backend.User.Expense.ExpenseValidator;
 import Frontend.FinanceGUI;
+import Frontend.main_page.ExpenseVisualPanel;
 
-public class ExpensePanel extends JPanel{
-    // layout
+/**
+ * This panel allows the user to interact with and manage expenses. It supports
+ * adding new expenses, updating descriptions, and deleting existing expenses.
+ * The panel contains fields to input date, amount, description, and category,
+ * along with buttons for each action.
+ */
+public class ExpensePanel extends JPanel {
+    private static final long serialVersionUID = 1L;
     private static final GridBagConstraints GBC = new GridBagConstraints();
 
-    // pressed flags
+    // Flags to track which buttons were pressed
     private boolean datePressed = false;
     private boolean amountPressed = false;
     private boolean descriptionPressed = false;
     private boolean descriptionUpdatePressed = false;
 
-    // text fields
-    private JTextField date;    
+    // Text fields for user input
+    private JTextField date;
     private JTextField amount;
     private JTextField description;
     private JTextField descriptionUpdate;
+    private JTextField startDateField;
+    private JTextField endDateField;
 
-    // dropdown
-    private JComboBox <String> cb;
+    // Dropdown for selecting the category
+    private JComboBox<String> cb;
 
-    // label
+    // Label for displaying status messages
     private JLabel label;
 
-    public ExpensePanel(){
+    /**
+     * Constructor that sets up the ExpensePanel layout and initializes UI components.
+     */
+    public ExpensePanel() {
         setLayout(new GridBagLayout());
         setBackground(new Color(255, 0, 92));
         setPreferredSize(new Dimension(FinanceGUI.WIDTH / 5, FinanceGUI.HEIGHT / 3));
 
-        // grid layout
+        // Set GridBagConstraints for positioning components
         GBC.gridx = 0;
         GBC.gridy = 0;
         GBC.fill = GridBagConstraints.HORIZONTAL;
 
-        // label
+        // Add label to the panel
         label = new JLabel();
         label.setFont(FinanceGUI.ENTRY_FONT);
         label.setHorizontalAlignment(JLabel.CENTER);
         add(label, GBC);
 
-        // date
-        date = makeTextField("YYYY-DD-MM");
+        // Add date input field
+        date = makeTextField("YYYY-MM-DD");
         GBC.gridy = 1;
         add(date, GBC);
 
-        // amount
+        // Add amount input field
         amount = makeTextField("AMOUNT");
         GBC.gridy = 2;
         add(amount, GBC);
 
-        // description
+        // Add description input field
         description = makeTextField("DESCRIPTION");
         GBC.gridy = 3;
         add(description, GBC);
 
-        // category
-        String items [] = {"FOOD", "TRANSPORTATION", "ENTERTAINMENT", "UTILITIES", "MISCELLANEOUS"};
-        cb = new JComboBox <> (items);
+        // Add category dropdown
+        String[] items = {"FOOD", "TRANSPORTATION", "ENTERTAINMENT", "UTILITIES", "MISCELLANEOUS"};
+        cb = new JComboBox<>(items);
         cb.setFont(FinanceGUI.ENTRY_FONT);
         cb.setBackground(new Color(255, 185, 210));
         cb.setOpaque(true);
         GBC.gridy = 4;
         add(cb, GBC);
 
-        // description text field
+        // Add description update input field
         descriptionUpdate = makeTextField("DESCRIPTION UPDATE");
         GBC.gridy = 5;
         add(descriptionUpdate, GBC);
 
-        // add expense button
+        // Add "ADD" button to the panel
         JButton addExpense = new JButton("ADD");
-
         addExpense.setFont(FinanceGUI.ENTRY_FONT);
         addExpense.setBackground(new Color(255, 185, 210));
         addExpense.setOpaque(true);
         addExpense.setBorderPainted(false);
-
-        addExpense.addActionListener(e ->  handleExpense(true));
-
+        addExpense.addActionListener(e -> handleExpense(true));
         GBC.gridy = 6;
-        
         add(addExpense, GBC);
+
+        // Add "UPDATE DESCRIPTION" button
+        JButton updateDescriptionButton = new JButton("UPDATE DESCRIPTION");
+        updateDescriptionButton.setFont(FinanceGUI.ENTRY_FONT);
+        updateDescriptionButton.setBackground(new Color(255, 185, 210));
+        updateDescriptionButton.setOpaque(true);
+        updateDescriptionButton.setBorderPainted(false);
+        updateDescriptionButton.addActionListener(e -> handleUpdateDescription());
+        GBC.gridy = 7;
+        add(updateDescriptionButton, GBC);
+
+        // Add "DELETE" button
+        JButton deleteExpenseButton = new JButton("DELETE");
+        deleteExpenseButton.setFont(FinanceGUI.ENTRY_FONT);
+        deleteExpenseButton.setBackground(new Color(255, 185, 210));
+        deleteExpenseButton.setOpaque(true);
+        deleteExpenseButton.setBorderPainted(false);
+        deleteExpenseButton.addActionListener(e -> handleDeleteExpense());
+        GBC.gridy = 8;
+        add(deleteExpenseButton, GBC);
     }
 
-    private JTextField makeTextField(String name){
+    /**
+     * Creates a JTextField with a specific placeholder text, font, and other styling.
+     * @param name The placeholder text to be displayed in the field.
+     * @return A JTextField with the specified configurations.
+     */
+    private JTextField makeTextField(String name) {
         JTextField field = new JTextField(name);
-        
         field.setHorizontalAlignment(JTextField.CENTER);
         field.setFont(FinanceGUI.ENTRY_FONT);
         field.setPreferredSize(new Dimension(300, 25));
         field.setBackground(new Color(255, 185, 210));
         field.setForeground(Color.GRAY);
-        
+
+        // Clear the field when clicked
         field.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                if (name.equals("YYYY-DD-MM")){
-                    handleTextClick(field, "date");
-                }
-                else {
-                    handleTextClick(field, name.toLowerCase());
-                }
+                field.setText("");
+                field.setForeground(Color.BLACK);
             }
         });
-        
+
         return field;
     }
 
-    private void handleExpense(boolean addOrUpdate){
+    /**
+     * Handles the update of an expense's description. It fetches the current expense,
+     * updates its description, and reflects the changes in the visual panel.
+     */
+    private void handleUpdateDescription() {
+        System.out.println("Update Description button clicked.");
         try {
+            // Retrieve input values
             String dateText = date.getText();
             Category category = Category.fromString((String) cb.getSelectedItem());
             double amountValue = Double.parseDouble(amount.getText());
-            String descTest = description.getText();
-            ExpenseValidator.validate(dateText, category, amountValue);
+            String oldDescription = description.getText();
+            String newDescription = descriptionUpdate.getText();
 
-            Expense expense = new Expense(dateText, category, amountValue, descTest);
+            // Create an expense object for updating
+            Expense expense = new Expense(dateText, category, amountValue, oldDescription); // Description doesn't matter for matching
+            boolean updated = UserDB.updateExpense(expense, newDescription); // Update the expense
 
-            UserDB.addExpense(expense);
-            label.setText("ADDED");
-            label.setForeground(Color.GREEN);
-        }
-        catch (Exception e) {
+            // Provide feedback to the user
+            if (updated) {
+                ExpenseVisualPanel.populateTable(category.toString()); // Refresh the table for the specific category
+                label.setText("UPDATED");
+                label.setForeground(Color.GREEN);
+            } else {
+                label.setText("NOT FOUND");
+                label.setForeground(Color.YELLOW);
+            }
+        } catch (Exception e) {
             label.setText("ERROR");
             label.setForeground(Color.BLUE);
             e.printStackTrace();
         }
     }
 
-    private void handleTextClick(JTextField entry, String name){
-        boolean s = false;
-        switch (name){
-            case "date":
-                if (!datePressed){
-                    s = true;
-                    datePressed = true;
-                }
-                break;
-            case "amount":
-                if (!amountPressed){
-                    s = true;
-                    amountPressed = true;
-                }
-                break;
-            case "description":
-                if (!descriptionPressed){
-                    s = true;
-                    descriptionPressed = true;
-                }
-                break;
-            case "description update":
-                if (!descriptionUpdatePressed){
-                    s = true;
-                    descriptionUpdatePressed = true;
-                }
-                break;
-        }
+    /**
+     * Handles adding or updating an expense. The method takes care of validation
+     * and adds or updates the expense in the database.
+     * @param addOrUpdate If true, it adds a new expense. If false, it updates an existing expense.
+     */
+    private void handleExpense(boolean addOrUpdate) {
+        try {
+            // Retrieve input values
+            String dateText = date.getText();
+            Category category = Category.fromString((String) cb.getSelectedItem());
+            double amountValue = Double.parseDouble(amount.getText());
+            String descTest = description.getText();
 
-        if (s){
-            entry.setText("");
-            entry.setForeground(Color.BLACK);
+            // Validate the expense input
+            ExpenseValidator.validate(dateText, category, amountValue);
+
+            // Create the expense object and add it to the database
+            Expense expense = new Expense(dateText, category, amountValue, descTest);
+            UserDB.addExpense(expense);
+
+            // Refresh the category table
+            ExpenseVisualPanel.populateTable(category.toString());
+            label.setText("ADDED");
+            label.setForeground(Color.GREEN);
+        } catch (Exception e) {
+            label.setText("ERROR");
+            label.setForeground(Color.BLUE);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handles the deletion of an expense. It removes the expense from the database
+     * and updates the visual panel.
+     */
+    private void handleDeleteExpense() {
+        System.out.println("Delete button clicked.");
+        try {
+            // Retrieve the details of the expense to delete
+            String dateText = date.getText();
+            Category category = Category.fromString((String) cb.getSelectedItem());
+            double amountValue = Double.parseDouble(amount.getText());
+            String descText = description.getText();
+
+            // Create an expense object to locate the one to delete
+            Expense expense = new Expense(dateText, category, amountValue, descText);
+            boolean deleted = UserDB.deleteExpense(expense);
+
+            // Refresh the visual panel if the deletion is successful
+            if (deleted) {
+                ExpenseVisualPanel.populateTable(category.toString()); // Refresh the table for the specific category
+                label.setText("DELETED");
+                label.setForeground(Color.GREEN);
+            } else {
+                label.setText("NOT FOUND");
+                label.setForeground(Color.YELLOW);
+            }
+        } catch (Exception e) {
+            label.setText("ERROR");
+            label.setForeground(Color.BLUE);
+            e.printStackTrace();
         }
     }
 }

@@ -1,24 +1,37 @@
 package Frontend.login_signup_page;
 
 import java.awt.Color;
-
 import javax.swing.JLabel;
-
 import Backend.Password;
 
-public class LoginPasswordLabel extends JLabel implements LoginObserver{
+/**
+ * The `LoginPasswordLabel` class is a graphical component that serves as 
+ * a status indicator for password validity during login or signup. 
+ * It implements the `LoginObserver` interface to dynamically update 
+ * the displayed message based on the entered password.
+ */
+public class LoginPasswordLabel extends JLabel implements LoginObserver {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Constructs a `LoginPasswordLabel` with a default message 
+     * indicating password requirements.
+     */
     public LoginPasswordLabel() {
         super("[12 characters | 1 upper case | 1 lower case | 1 number]");
     }
 
-    /*
-     *  updates the observer with the validity of the password that was entered
-     *  
-     *  @param valString (String) - the password | username entered by the user
+    /**
+     * Updates the label to reflect the validity of the entered password. 
+     * If the password is invalid, the label displays specific reasons for invalidity.
+     * If valid, the label displays a success message.
+     * 
+     * @param val - a `String` containing the username and password separated by a colon
      */
-    public void newLogin(String val){
-        // get the password 
-        String [] vals = val.split(":");
+    @Override
+    public void newLogin(String val) {
+        // Extract the password from the input string
+        String[] vals = val.split(":");
         String password = vals[1];
 
         StringBuilder text = new StringBuilder();
@@ -28,66 +41,55 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver{
         boolean hasNum = false;
         boolean hasSpace = false;
 
-        // invalid text, update as necessary
-        if (!(Password.isValid(password))){
-            // set color to red
+        // Check if the password is invalid
+        if (!Password.isValid(password)) {
+            // Set the label color to red for invalid password
             this.setForeground(Color.BLACK);
             text.append("|");
 
-            // check for invalid length
-            if (password.length() < 12){
+            // Check if the password length is less than required
+            if (password.length() < 12) {
                 text.append("too few characters |");
             }
 
-            // scan string
-            for (int i = 0; i < N; i++){
-                // lower case
-                if (Character.isLowerCase(password.charAt(i))){
+            // Analyze the password character by character
+            for (int i = 0; i < N; i++) {
+                // Check for lowercase letters
+                if (Character.isLowerCase(password.charAt(i))) {
                     hasLower = true;
                 }
-
-                // upper case
-                else if (Character.isUpperCase(password.charAt(i))){
+                // Check for uppercase letters
+                else if (Character.isUpperCase(password.charAt(i))) {
                     hasUpper = true;
                 }
-
-                // number
-                else if (Character.isDigit(password.charAt(i))){
+                // Check for numeric characters
+                else if (Character.isDigit(password.charAt(i))) {
                     hasNum = true;
                 }
-
-                // space
-                else if (password.charAt(i) == ' '){
+                // Check for spaces
+                else if (password.charAt(i) == ' ') {
                     hasSpace = true;
                 }
             }
 
-            // update text if no lower case
-            if (!hasLower){
+            // Append missing criteria to the feedback text
+            if (!hasLower) {
                 text.append("at least one lower case |");
             }
-
-            // update text if no upper case
-            if (!hasUpper){
+            if (!hasUpper) {
                 text.append("at least one upper case |");
             }
-
-            // update text if no number
-            if (!hasNum){
+            if (!hasNum) {
                 text.append("at least one number |");
             }
-
-            // update text if space
-            if (hasSpace){
+            if (hasSpace) {
                 text.append("space not allowed |");
             }
 
-            // update the text
-            String finalText = text.toString();
-            this.setText(finalText);
-        }
-
-        // valid password, update as necessary
+            // Update the label with the final feedback text
+            this.setText(text.toString());
+        } 
+        // If the password is valid, display a success message
         else {
             this.setForeground(Color.BLACK);
             this.setText("Strong password");

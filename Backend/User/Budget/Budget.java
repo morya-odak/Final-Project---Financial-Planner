@@ -25,10 +25,11 @@ public class Budget implements Serializable {
         this.expenseManager = expenseManager;
         monthlyBudgets = new HashMap<>();
 
+        // Initialize monthlyBudgets with default values
         for (Month month : Month.values()) {
             Map<Category, Double> categoryBudgets = new HashMap<>();
             for (Category category : Category.values()) {
-                categoryBudgets.put(category, 0.0);
+                categoryBudgets.put(category, 0.0); // Default budget is 0.0
             }
             monthlyBudgets.put(month, categoryBudgets);
         }
@@ -59,6 +60,10 @@ public class Budget implements Serializable {
      */
     public double getBudget(Month yearMonth, Category category) {
         Map<Category, Double> monthBudget = monthlyBudgets.get(yearMonth);
+        if (monthBudget == null || !monthBudget.containsKey(category)) {
+            System.out.println(monthBudget == null);
+            return 0.0;
+        }
         System.out.println("budget for " + yearMonth + " " + category + " " + monthBudget.get(category));
         return monthBudget.get(category);
     }
@@ -73,8 +78,8 @@ public class Budget implements Serializable {
     public double getTotalSpentByCategory(Category category) {
         List<Expense> expenses = expenseManager.getExpensesByCategory(category);
         return expenses.stream()
-                    .mapToDouble(Expense::getAmount)
-                    .sum();
+                       .mapToDouble(Expense::getAmount) // Extract the amount of each expense
+                       .sum();                         // Sum the amounts
     }
 
     /*
@@ -101,8 +106,11 @@ public class Budget implements Serializable {
      * @return double - the total amount spent in the specified category and month
      */
     public double getTotalSpentByCategoryAndMonth(Month month, Category category) {
+        // Retrieve all expenses for the specified category
         List<Expense> expenses = expenseManager.getExpensesByCategory(category);
         System.out.println(expenses.toString());
+
+        // Filter the expenses by the specified month and sum their amounts
         return expenses.stream()
                     .filter(expense -> expense.inMonth(month))
                     .mapToDouble(Expense::getAmount)

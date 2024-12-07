@@ -5,18 +5,22 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
 import Backend.UserDB;
 import Backend.Enums.Category;
 import Backend.User.Expense.Expense;
 import Frontend.FinanceGUI;
 
 public class ExpenseVisualPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
     private static final DefaultTableModel FOOD_MODEL = createTable();
     private static final DefaultTableModel TRANSPORTATION_MODEL = createTable();
     private static final DefaultTableModel ENTERTAINMENT_MODEL = createTable();
@@ -24,9 +28,11 @@ public class ExpenseVisualPanel extends JPanel {
     private static final DefaultTableModel MISCELLANEOUS_MODEL = createTable();
 
     private static final GridBagConstraints GBC = new GridBagConstraints();
-
+    private static final GridBagConstraints MBUTTON = new GridBagConstraints();
+    private JButton budgetButton;
+    
     public ExpenseVisualPanel() {
-        setPreferredSize(new Dimension((int) (FinanceGUI.WIDTH * (4.0 / 5)), (int) FinanceGUI.HEIGHT / 2));
+    	setPreferredSize(new Dimension((int) (FinanceGUI.WIDTH * (4.0 / 5)), (int) (FinanceGUI.HEIGHT * (9.0 / 10))));
         setBackground(new Color(255, 185, 210));
         setLayout(new GridBagLayout());
         setFont(FinanceGUI.ENTRY_FONT);
@@ -45,27 +51,48 @@ public class ExpenseVisualPanel extends JPanel {
         addTable(MISCELLANEOUS_MODEL, "MISCELLANEOUS");
 
         // Sorting the data by date button
-        GBC.gridy = 2;
-        GBC.weighty = 0;
-        GBC.gridx = 1;
-        JTextField a = new JTextField("YYYY-DD-mm");
-        a.setFont(FinanceGUI.ENTRY_FONT);
-        a.setForeground(Color.GRAY);
-        a.setHorizontalAlignment(JTextField.CENTER);
-        add(a, GBC);
+//        GBC.gridy = 2;
+//        GBC.weighty = 0;
+//        GBC.gridx = 1;
+//        JTextField a = new JTextField("YYYY-DD-mm");
+//        a.setFont(FinanceGUI.ENTRY_FONT);
+//        a.setForeground(Color.GRAY);
+//        a.setHorizontalAlignment(JTextField.CENTER);
+//        add(a, GBC);
+//
+//        GBC.gridx = 2;
+//        JLabel b = new JLabel("TO");
+//        b.setFont(FinanceGUI.ENTRY_FONT);
+//        b.setHorizontalAlignment(JLabel.CENTER);
+//        add(b, GBC);
+//
+//        GBC.gridx = 3;
+//        JTextField c = new JTextField("YYYY-DD-mm");
+//        c.setFont(FinanceGUI.ENTRY_FONT);
+//        c.setForeground(Color.GRAY);
+//        c.setHorizontalAlignment(JTextField.CENTER);
+//        add(c, GBC);
+        
+     // Create and style the button
+        budgetButton = new JButton("Toggle Budget");
+        budgetButton.setFont(FinanceGUI.ENTRY_FONT);
+        budgetButton.setBackground(new Color(200, 100, 150));
+        budgetButton.setForeground(Color.WHITE);
+        budgetButton.setFocusPainted(false);
 
-        GBC.gridx = 2;
-        JLabel b = new JLabel("TO");
-        b.setFont(FinanceGUI.ENTRY_FONT);
-        b.setHorizontalAlignment(JLabel.CENTER);
-        add(b, GBC);
+        // Add the button to the panel
+        MBUTTON.gridx = 4;
+        MBUTTON.gridy = 15;
+        MBUTTON.fill = GridBagConstraints.HORIZONTAL;
+        budgetButton.setFont(FinanceGUI.ENTRY_FONT);
+        budgetButton.setForeground(Color.GRAY);
+        budgetButton.setHorizontalAlignment(JTextField.CENTER);
+        add(budgetButton, MBUTTON);
 
-        GBC.gridx = 3;
-        JTextField c = new JTextField("YYYY-DD-mm");
-        c.setFont(FinanceGUI.ENTRY_FONT);
-        c.setForeground(Color.GRAY);
-        c.setHorizontalAlignment(JTextField.CENTER);
-        add(c, GBC);
+        budgetButton.addActionListener (e -> {
+        FinanceGUI.CARD_LAYOUT.show(FinanceGUI.CARDS_PANEL, "Panel 3");
+        BudgetVisualPanel.populateTable();
+        });
     }   
 
     // Adds and populates a table
@@ -105,6 +132,8 @@ public class ExpenseVisualPanel extends JPanel {
     public static void populateTable(String categoryName) {
         DefaultTableModel model;
         Category category;
+
+        // Determine which model to use based on the category
         switch (categoryName.toUpperCase()) {
             case "FOOD":
                 model = FOOD_MODEL;
@@ -130,11 +159,16 @@ public class ExpenseVisualPanel extends JPanel {
                 throw new IllegalArgumentException("Invalid category: " + categoryName);
         }
 
+        // Clear the table model to prevent duplicates
+        model.setRowCount(0);
+
+        // Fetch expenses from UserDB and add them to the table
         List<Expense> expenses = UserDB.getExpensesByCategory(category);
         for (Expense e : expenses) {
             model.addRow(new Object[] { e.getDate(), e.getAmount(), e.getDescription() });
         }
     }
+
 
     // Creates a new table model
     private static DefaultTableModel createTable() {
@@ -144,6 +178,41 @@ public class ExpenseVisualPanel extends JPanel {
         model.addColumn("DESC.");
         return model;
     }
+    
+    public static void populateWithFilteredData(List<Expense> filteredExpenses) {
+        // Clear all table models
+        FOOD_MODEL.setRowCount(0);
+        TRANSPORTATION_MODEL.setRowCount(0);
+        ENTERTAINMENT_MODEL.setRowCount(0);
+        UTILITIES_MODEL.setRowCount(0);
+        MISCELLANEOUS_MODEL.setRowCount(0);
+
+        // Add filtered expenses to the appropriate table
+        for (Expense e : filteredExpenses) {
+            DefaultTableModel model;
+            switch (e.getCategory()) {
+                case FOOD:
+                    model = FOOD_MODEL;
+                    break;
+                case TRANSPORTATION:
+                    model = TRANSPORTATION_MODEL;
+                    break;
+                case ENTERTAINMENT:
+                    model = ENTERTAINMENT_MODEL;
+                    break;
+                case UTILITIES:
+                    model = UTILITIES_MODEL;
+                    break;
+                case MISCELLANEOUS:
+                    model = MISCELLANEOUS_MODEL;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown category: " + e.getCategory());
+            }
+            model.addRow(new Object[]{e.getDate(), e.getAmount(), e.getDescription()});
+        }
+    }
+
 
     // Styles the JTable
     private void styleTable(JTable table) {

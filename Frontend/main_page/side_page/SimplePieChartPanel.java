@@ -1,4 +1,5 @@
 package Frontend.main_page.side_page;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.HashMap;
@@ -61,36 +62,45 @@ public class SimplePieChartPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // If there are no categories or spending data, show a placeholder message
         if (categories.length == 0 || spendings.length == 0) {
             g.drawString("Select a month", getWidth() / 2 - 50, getHeight() / 2);
             return;
         }
 
+        // Calculate total spending
         int total = 0;
         for (int spending : spendings) {
             total += spending;
         }
 
+        // Determine the size of the circle (adjust for smaller chart)
         int padding = 150;
-        int diameter = Math.min(getWidth() / 2, getHeight()) - padding;
+        int diameter = Math.min(getWidth() / 2, getHeight()) - padding; // Adjust for key on the side
         if (diameter < 0) {
-            return; 
+            return; // Prevent drawing if panel size is too small
         }
 
-        int x = 50;
+        int x = 50; // Position chart on the left
         int y = (getHeight() - diameter) / 2;
 
+        // Draw pie chart
         int startAngle = 0;
         for (int i = 0; i < categories.length; i++) {
+            // Calculate the arc angle based on spending proportion
             int arcAngle = (int) Math.round(360.0 * spendings[i] / total);
 
+            // Get color for the category and set it for the pie slice
             g.setColor(categoryColors.get(categories[i]));
 
+            // Draw the pie slice
             g.fillArc(x, y, diameter, diameter, startAngle, arcAngle);
 
+            // Update the start angle for the next slice
             startAngle += arcAngle;
         }
 
+        // Draw the key to the right of the pie chart
         drawKey(g, x + diameter + 20, y);
     }
 
@@ -106,10 +116,13 @@ public class SimplePieChartPanel extends JPanel {
         int boxSize = 20;
         int padding = 10;
 
+        // Draw the legend for each category
         for (int i = 0; i < categories.length; i++) {
+            // Draw color box
             g.setColor(categoryColors.get(categories[i]));
             g.fillRect(x, y + i * (boxSize + padding), boxSize, boxSize);
 
+            // Draw category name next to the color box
             g.setColor(Color.BLACK);
             g.drawString(categories[i], x + boxSize + 10, y + i * (boxSize + padding) + boxSize - 5);
         }

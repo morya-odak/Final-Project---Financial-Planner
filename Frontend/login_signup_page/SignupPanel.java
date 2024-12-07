@@ -1,4 +1,5 @@
 package Frontend.login_signup_page;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,19 +10,31 @@ import Backend.Password;
 import Backend.UserDB;
 import Frontend.FinanceGUI;
 
+/**
+ * The `SignupPanel` class represents the signup form in the application. 
+ * It includes fields for username and password, validation, and a signup button. 
+ * It allows users to create new accounts if their credentials meet the validation requirements.
+ */
 public class SignupPanel extends EntryPanel {
-    public SignupPanel(){
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Constructs a `SignupPanel` which initializes the panel with custom colors
+     * and sets up the layout for username and password input fields, as well as
+     * a signup button.
+     */
+    public SignupPanel() {
+        // Initialize the panel with specific header and background colors
         super("Signup for Financial Tracking!", new Color(255, 0, 92), new Color(255, 185, 210));
     }
 
-    /*
-     *  sets the user for the GUI which includes the user text box along with 
-     *  the user label that has the status of the username, if it exists or not
-     *  
-     *  @param userEntry (JTextField) - the text box for the username
+    /**
+     * Sets up the username input field and the label to indicate whether the 
+     * username is valid or not (e.g., whether it already exists).
      * 
-     *  @return LoginObserver - instance of the LoginObserver interface, a
-     *                          label for the user status
+     * @param userEntry - the JTextField where the user will enter their username
+     * 
+     * @return SignupUserLabel - an instance of the `SignupUserLabel` to display the username status
      */
     @Override
     protected LoginObserver setUser(JTextField userEntry) {
@@ -35,52 +48,52 @@ public class SignupPanel extends EntryPanel {
         GBC.gridy = 2;
         add(userLabel, GBC);
 
-        // listens for user interaction
+        // Add listener for user interaction with the username text field
         userEntry.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                if (!userEntryPressed){
-                    userEntry.setText("");
-                    userEntry.setForeground(Color.BLACK);
+                if (!userEntryPressed) {
+                    userEntry.setText(""); // Clear text on first click
+                    userEntry.setForeground(Color.BLACK); // Change text color
                     userEntryPressed = true;
                 }
             }
         });
 
-        return userLabel;
+        return userLabel; // Return the label to be used by observers
     }
 
-    /*
-     *  sets the submit button for the user 
+    /**
+     * Sets up the submit button for the signup form. This button handles the 
+     * validation of user input and attempts to create a new user account if valid.
      * 
-     *  @param userEntry (JTextField) - the username that was entered, needed to pass
-     *                                  as the text for the action command
-     * 
-     *  @param passwordEntry (JTextField) - the password that was entered, needed to pas
-     *                                      as the text fo the action command
+     * @param userEntry - the username entered by the user
+     * @param passwordEntry - the password entered by the user
      */
     @Override
     protected void setSubmit(JTextField userEntry, JTextField passwordEntry) {
+        // Create and configure the submit button
         loginButton = new JButton("SIGN UP");
         loginButton.setFont(FinanceGUI.ENTRY_FONT);
         loginButton.setBackground(ENTRY_COLOR);
 
+        // Add action listener to handle button click
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // username & password
+                // Get the username and password from the input fields
                 String username = userEntry.getText();
                 String password = passwordEntry.getText();
 
-                // check for valid sign-up
-                if (!UserDB.checkUser(username) && Password.isValid(password)){
+                // Check if the username is not already taken and if the password is valid
+                if (!UserDB.checkUser(username) && Password.isValid(password)) {
+                    // Add the user to the database and populate all users
                     UserDB.addUser(username, password);
                     UserDB.populateAll();
+                    // Switch to the next screen (probably a login or dashboard)
                     FinanceGUI.CARD_LAYOUT.next(FinanceGUI.CARDS_PANEL);
-                }
-
-                // invalid sign-up, update the labels
-                else {
+                } else {
+                    // If the sign-up is invalid, update the action command and listeners
                     String command = "Admin:" + username + ":" + password;
                     loginButton.setActionCommand(command);
                     loginButton.addActionListener(controller);
@@ -88,6 +101,7 @@ public class SignupPanel extends EntryPanel {
             }
         });
 
+        // Add the submit button to the panel at the specified grid position
         GBC.gridy = 6;
         add(loginButton, GBC);
     }
