@@ -1,9 +1,9 @@
 package Frontend;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
-import Backend.UserDB;
 import Frontend.main_page.BudgetVisualPanel;
 import Frontend.main_page.side_page.BudgetSidePanel;
 
@@ -29,10 +29,8 @@ public class BudgetPanel extends JPanel {
     public BudgetPanel() {
         setLayout(new BorderLayout());
         
-        // Add the BudgetSidePanel to the WEST region of the layout
         add(new BudgetSidePanel(), BorderLayout.WEST);
         
-        // Add the BudgetVisualPanel to the EAST region of the layout
         add(new BudgetVisualPanel(), BorderLayout.EAST);
     }
 }

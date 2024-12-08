@@ -117,7 +117,6 @@ public class ExpenseManager implements Serializable {
         LocalDate start = LocalDate.parse(startDate, formatter);
         LocalDate end = LocalDate.parse(endDate, formatter);
 
-        // Adjust dates if start is after end
         LocalDate adjustedStart = start.isAfter(end) ? end : start;
         LocalDate adjustedEnd = start.isAfter(end) ? start : end;
 

@@ -19,6 +19,11 @@ import Backend.Enums.Category;
 import Backend.User.Expense.Expense;
 import Frontend.FinanceGUI;
 
+/**
+ * Represents a visual panel for displaying and interacting with user expenses.
+ * This panel includes tables for various expense categories and allows users to
+ * view and manage their expenses, including navigation to the budget panel.
+ */
 public class ExpenseVisualPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
     private static final DefaultTableModel FOOD_MODEL = createTable();
@@ -30,7 +35,10 @@ public class ExpenseVisualPanel extends JPanel {
     private static final GridBagConstraints GBC = new GridBagConstraints();
     private static final GridBagConstraints MBUTTON = new GridBagConstraints();
     private JButton budgetButton;
-    
+    /**
+     * Constructs the ExpenseVisualPanel.
+     * Initializes the layout, tables, and components for displaying expenses by category.
+     */
     public ExpenseVisualPanel() {
     	setPreferredSize(new Dimension((int) (FinanceGUI.WIDTH * (4.0 / 5)), (int) (FinanceGUI.HEIGHT * (9.0 / 10))));
         setBackground(new Color(255, 185, 210));
@@ -68,7 +76,12 @@ public class ExpenseVisualPanel extends JPanel {
         BudgetVisualPanel.populateTable();
         });
     }   
-
+    /**
+     * Adds a table to the panel for a specific expense category.
+     *
+     * @param model the table model used for the category
+     * @param name the name of the expense category
+     */
     private void addTable(DefaultTableModel model, String name) {
         JLabel label = new JLabel(name);
         label.setFont(FinanceGUI.ENTRY_FONT);
@@ -89,7 +102,9 @@ public class ExpenseVisualPanel extends JPanel {
         add(scrollPane, GBC);
         GBC.gridx++;
     }
-
+    /**
+     * Populates all expense category tables with data.
+     */
     public static void populateAll(){
         populateTable("FOOD");
         populateTable("TRANSPORTATION");
@@ -97,7 +112,11 @@ public class ExpenseVisualPanel extends JPanel {
         populateTable("UTILITIES");
         populateTable("MISCELLANEOUS");
     }
-
+    /**
+     * Populates a specific category table with expense data.
+     *
+     * @param categoryName the name of the category to populate
+     */
     public static void populateTable(String categoryName) {
         DefaultTableModel model;
         Category category;
@@ -135,7 +154,11 @@ public class ExpenseVisualPanel extends JPanel {
         }
     }
 
-
+    /**
+     * Creates a table model with predefined columns for expenses.
+     *
+     * @return a DefaultTableModel with columns for date, amount, and description
+     */
     private static DefaultTableModel createTable() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("DATE");
@@ -143,7 +166,11 @@ public class ExpenseVisualPanel extends JPanel {
         model.addColumn("DESC.");
         return model;
     }
-    
+    /**
+     * Populates the tables with filtered data based on a list of expenses.
+     *
+     * @param filteredExpenses the filtered list of expenses to display
+     */
     public static void populateWithFilteredData(List<Expense> filteredExpenses) {
         FOOD_MODEL.setRowCount(0);
         TRANSPORTATION_MODEL.setRowCount(0);
@@ -177,7 +204,11 @@ public class ExpenseVisualPanel extends JPanel {
         }
     }
 
-
+    /**
+     * Applies consistent styling to a JTable.
+     *
+     * @param table the table to style
+     */
     private void styleTable(JTable table) {
         table.setBackground(new Color(255, 185, 210));
         table.setFont(new Font("Arial", Font.PLAIN, 12));

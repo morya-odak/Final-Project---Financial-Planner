@@ -28,7 +28,6 @@ import Frontend.main_page.ExpenseVisualPanel;
 public class IEPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    // Constants for layout constraints and labels
     private static final GridBagConstraints GBC = new GridBagConstraints();
     private static final JLabel EXPORT_LABEL = new JLabel();
     private static final JLabel IMPORT_LABEL = new JLabel();

@@ -199,22 +199,36 @@ public class UserDB implements Serializable{
             return null;
         }
     }
-
+    /**
+     * Adds a new expense for the currently logged-in user.
+     *
+     * @param e the expense to add
+     */
     public static void addExpense(Expense e){
         User user = loadUsers().get(currUser);
         user.addExpense(e);
         saveUser(user);
     }
-
+    /**
+     * Populates all expense tables in the visual panel with data.
+     */
     public static void populateAll(){
         ExpenseVisualPanel.populateAll();
     }
-
+    /**
+     * Populates all expense tables in the visual panel with data.
+     */
     public static List <Expense> getExpensesByCategory(Category category){
         User user = loadUsers().get(currUser);
         return user.getExpensesByCategory(category);
     }
-
+    /**
+     * Updates the description of an existing expense for the currently logged-in user.
+     *
+     * @param expense the expense to update
+     * @param newDescription the new description for the expense
+     * @return true if the expense was successfully updated, false otherwise
+     */
     public static boolean updateExpense(Expense expense, String newDescription) {
         System.out.println("Updating expense: " + expense + " with new description: " + newDescription);
         User currentUser = loadUsers().get(currUser);
@@ -230,7 +244,12 @@ public class UserDB implements Serializable{
         return false;
     }
 
-
+    /**
+     * Deletes an expense for the currently logged-in user.
+     *
+     * @param expense the expense to delete
+     * @return true if the expense was successfully deleted, false otherwise
+     */
     public static boolean deleteExpense(Expense expense) {
         try {
             User currentUser = loadUsers().get(currUser);
@@ -246,7 +265,13 @@ public class UserDB implements Serializable{
         }
         return false;
     }
-    
+    /**
+     * Retrieves expenses within a specified date range for the currently logged-in user.
+     *
+     * @param startDate the start date of the range in "yyyy-MM-dd" format
+     * @param endDate the end date of the range in "yyyy-MM-dd" format
+     * @return a list of expenses within the specified date range
+     */
     public static List<Expense> getExpensesByDateRange(String startDate, String endDate) {
         User currentUser = loadUsers().get(currUser);
         if (currentUser != null) {
@@ -255,19 +280,36 @@ public class UserDB implements Serializable{
         return new ArrayList<>();
     }
 
-
+    /**
+     * Retrieves all expenses for the currently logged-in user.
+     *
+     * @return an ArrayList of all expenses
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static ArrayList <Expense> getExpenses(){
         return (ArrayList) loadUsers().get(currUser).getAllExpenses();
     }
-    
+    /**
+     * Sets the budget for a specific category and month for the currently logged-in user.
+     *
+     * @param yearMonth the month to set the budget for
+     * @param category the category to set the budget for
+     * @param amount the budget amount
+     */
     public static void setBudget(Month yearMonth, Category category, double amount) {
         User user = loadUsers().get(currUser);
         user.setBudget(yearMonth, category, amount);
         saveUser(user);
     }
 
-    
+    /**
+     * Retrieves the budget for a specific category and month for the currently logged-in user.
+     *
+     * @param yearMonth the month to retrieve the budget for
+     * @param category the category to retrieve the budget for
+     * @return the budget amount
+     * @throws IllegalStateException if no user is currently logged in
+     */   
     public static double getBudget(Month yearMonth, Category category) {
         if (currUser == null) {
             throw new IllegalStateException("No user is currently logged in.");
@@ -275,14 +317,25 @@ public class UserDB implements Serializable{
     	User user = loadUsers().get(currUser);
     	return user.getBudget(yearMonth, category);
     }
-    
+    /**
+     * Retrieves the total amount spent in a specific category for the currently logged-in user.
+     *
+     * @param category the category to retrieve spending data for
+     * @return the total amount spent in the category
+     */
     public static double getTotalSpentByCategory(Category category) {
     	User user = loadUsers().get(currUser);
     	return user.getTotalSpentByCategory(category);
     }
     
-    
-    
+    /**
+     * Retrieves the total amount spent in a specific category and month for the currently logged-in user.
+     *
+     * @param yearMonth the month to retrieve spending data for
+     * @param category the category to retrieve spending data for
+     * @return the total amount spent in the category and month
+     * @throws IllegalStateException if no user is currently logged in
+     */
     public static double getTotalSpentByCategoryAndMonth(Month yearMonth, Category category) {
     	User user = loadUsers().get(currUser);
         if (user == null) {
@@ -293,7 +346,13 @@ public class UserDB implements Serializable{
     }
 
 
-
+    /**
+     * Checks if a budget alert should be triggered for a specific category and month.
+     *
+     * @param month the month to check
+     * @param category the category to check
+     * @return true if a budget alert is triggered, false otherwise
+     */
 	public static boolean checkBudgetAlert(Month month, Category category) {
     	User user = loadUsers().get(currUser);
     	return user.checkBudgetAlert(month, category);

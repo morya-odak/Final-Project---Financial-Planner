@@ -58,3 +58,10 @@ Implement robust error handling for file operations, including file not found er
 inconsistencies.
 Provide clear feedback to the user about the success or failure of import/export operations.
 Validate the imported data to ensure it meets the required format and contains valid information.
+
+In order to run our code you simply complie it and a login panel will show up. For first time users, you sign and it will take you to our home screen. Once at our home screen there are buttons on the side with prefilled text on how to use and add expnses to our table. There is also a toggle budget button which will take you to our budget panel in which you can set your budget for each category. In that same panel there is another button that will show you the overview of all ur expenses for each month. This is done using a pie chart and there is a designated pie chart for each month in which you can filter from. There are multiple back buttons to go back and to different panels. As far as its main implementations which is adding functions, it is pretty straight forward as ehc buttons tells ypu what to do and how ot properly put it the correct format of the text.
+
+File Structure
+- `Backend`- Handles all the functioanilty of the user as well as the users expesnes and budgets.
+- `Frontend` - Handles all the gui along with the pie chart, buttons and panels that were used
+- `test` - Handles all the testing for the backend

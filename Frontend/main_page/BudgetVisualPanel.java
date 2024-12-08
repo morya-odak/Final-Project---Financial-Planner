@@ -22,14 +22,21 @@ import Backend.Enums.Category;
 import Backend.Enums.Month;
 import Frontend.FinanceGUI;
 
-
+    /**
+     * Represents a visual panel for displaying and interacting with budget data.
+     * This panel allows users to view their budgets, spending, and remaining funds 
+     * for each category and provides alerts for overspending.
+     */
 public class BudgetVisualPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private static final DefaultTableModel BUDGET_MODEL = createTable();
     private static final GridBagConstraints GBC = new GridBagConstraints();
     private static JComboBox<String> monthDropdown;
     public static JLabel[] alertLabels;
-
+    /**
+     * Constructs the BudgetVisualPanel.
+     * Initializes the layout, components, and actions for the budget visualization interface.
+     */
     public BudgetVisualPanel() {
         setPreferredSize(new Dimension((int) (FinanceGUI.WIDTH * (4.0 / 5)), FinanceGUI.HEIGHT));
         setBackground(new Color(200, 200, 255));
@@ -105,7 +112,11 @@ public class BudgetVisualPanel extends JPanel {
 
 
 
-
+    /**
+     * Populates the budget table with data for the specified month.
+     *
+     * @param month the selected month for which data will be displayed
+     */
     public static void populateTable(Month month) {
         Category[] categories = Category.values();
 
@@ -145,13 +156,12 @@ public class BudgetVisualPanel extends JPanel {
     public static void populateTable() {
     	monthDropdown.setSelectedIndex(0);
         Category[] categories = Category.values();
-        // Clear all alert labels
         for (JLabel alertLabel : alertLabels) {
-            alertLabel.setText(" "); // Reset to blank
+            alertLabel.setText(" ");
         }
 
-        int alertCount = 0; // Track the number of alerts
-        Month currentMonth = Month.JANUARY; // Example: Adjust dynamically for the current month
+        int alertCount = 0;
+        Month currentMonth = Month.JANUARY;
 
         for (int col = 1; col <= categories.length; col++) {
             try {
@@ -159,7 +169,6 @@ public class BudgetVisualPanel extends JPanel {
                 double spent = UserDB.getTotalSpentByCategoryAndMonth(currentMonth, categories[col - 1]);
                 double remaining = budget - spent;
 
-                // Check for budget alerts
                 if (budget > 0 && spent >= 0.8 * budget && alertCount < alertLabels.length) {
                     alertLabels[alertCount].setText(
                         "ALERT: You have spent over 80% of your budget for " + categories[col - 1] + "."
@@ -179,7 +188,11 @@ public class BudgetVisualPanel extends JPanel {
             }
         }
     }
-
+    /**
+     * Creates the table model with predefined rows and columns.
+     *
+     * @return the DefaultTableModel for the budget table
+     */
     private static DefaultTableModel createTable() {
         DefaultTableModel model = new DefaultTableModel();
 

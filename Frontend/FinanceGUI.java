@@ -30,13 +30,10 @@ import Frontend.main_page.side_page.FinanceReportPanel;
 public class FinanceGUI extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    // The layout manager used for switching between different panels.
     public static final CardLayout CARD_LAYOUT = new CardLayout();
 
-    // The main container panel for holding the different panels.
     public static final JPanel CARDS_PANEL = new JPanel(CARD_LAYOUT);
 
-    // Dimensions for the application window, set to full screen size.
     public static final Dimension SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     public static final int WIDTH = (int) SIZE.getWidth();
     public static final int HEIGHT = (int) SIZE.getHeight();
@@ -104,7 +101,6 @@ public class FinanceGUI extends JFrame {
         add(CARDS_PANEL);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        // Make the frame visible.
         setVisible(true);
     }
 
