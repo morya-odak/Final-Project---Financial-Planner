@@ -1,14 +1,16 @@
 package Frontend.login_signup_page;
 
 import java.awt.Color;
+
 import javax.swing.JLabel;
+
 import Backend.UserDB;
 
 /**
- * The `LoginUserLabel` class is a graphical component that serves as 
- * a status indicator for the validity of the entered username during 
- * login or signup. It implements the `LoginObserver` interface and 
- * dynamically updates the label based on whether the username exists in 
+ * The `LoginUserLabel` class is a graphical component that serves as
+ * a status indicator for the validity of the entered username during
+ * login or signup. It implements the `LoginObserver` interface and
+ * dynamically updates the label based on whether the username exists in
  * the user database.
  */
 public class LoginUserLabel extends JLabel implements LoginObserver {
@@ -34,17 +36,13 @@ public class LoginUserLabel extends JLabel implements LoginObserver {
      */
     @Override
     public void newLogin(String val) {
-        // Extract the username from the input string
         String[] vals = val.split(":");
         String username = vals[0];
 
-        // Check if the username exists in the user database
         if (!UserDB.checkUser(username)) {
-            // If the username doesn't exist, display an error message
             this.setForeground(Color.BLACK);
             this.setText("Username does not exist");
         } else {
-            // If the username exists, display a success message
             this.setForeground(Color.BLACK);
             this.setText("User exists");
         }

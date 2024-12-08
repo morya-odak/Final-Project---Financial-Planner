@@ -28,7 +28,6 @@ public class UserDB implements Serializable{
     private final static String DATA_FILE = "userdata.txt";
     private static String currUser = null;
 
-    // adds the hashmap if necessary
     static {
         File file = new File(DATA_FILE);
         if (file.exists() && file.length() == 0){
@@ -50,24 +49,20 @@ public class UserDB implements Serializable{
      *  @return boolean - true if the user can log in, and false otherwise
      */
     public static boolean checkLogin(String username, String password) {
-        // variables used to read file
         String line;
         String[] arr;
 
-        // variables read from file
         String fUser;
         String fPassword;
         byte[] fSalt;
 
-        // create reader + traverse through file
         try (BufferedReader fr = new BufferedReader(new FileReader(LOGIN_FILE))) {
             while ((line = fr.readLine()) != null) {
                 arr = line.split(":");
 
-                // Ensure the line has the correct format
                 if (arr.length != 3) {
                     System.err.println("Invalid line in login.txt: " + line);
-                    continue; // Skip invalid entries
+                    continue;
                 }
 
                 fUser = arr[0];
@@ -78,17 +73,15 @@ public class UserDB implements Serializable{
                 System.out.println("Base64 Salt: " + saltString);
 
                 try {
-                    fSalt = Base64.getDecoder().decode(saltString); // Decode Base64 salt
+                    fSalt = Base64.getDecoder().decode(saltString); 
 
-                    // Check if username matches
                     if (fUser.equals(username)) {
                         System.out.println("Username match found. Validating password...");
 
-                        // Generate hashed password and compare
                         String hashedPassword = Password.generatePassword(password, fSalt);
                         if (hashedPassword.equals(fPassword)) {
                             currUser = username;
-                            return true; // Login successful
+                            return true;
                         }
                     }
                 } catch (IllegalArgumentException e) {
@@ -100,11 +93,11 @@ public class UserDB implements Serializable{
                 }
             }
 
-            // If we reach here, the username/password combo was not found
+            
             return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return false; // Login failed due to file error
+            return false;
         }
     }
     
@@ -120,11 +113,9 @@ public class UserDB implements Serializable{
      *  @return boolean - true if the user exists in the DB and false otherwise
      */
     public static boolean checkUser(String username){
-        // variables used to read file
         String line;
         String [] arr;
 
-        // variables read from file
         String fUser;
 
         try (BufferedReader fr = new BufferedReader(new FileReader(LOGIN_FILE))){
@@ -135,8 +126,6 @@ public class UserDB implements Serializable{
                     return true;
                 }
             }
-
-            // if here, the username was never found
             return false;
         }
         catch (IOException e){
@@ -159,13 +148,11 @@ public class UserDB implements Serializable{
     public static void addUser(String username, String password){
         try (FileWriter fw = new FileWriter(LOGIN_FILE, true)){
 
-            // attempt to create new password
             try {
                 byte [] salt = Password.generateSalt();
                 String newPassword = Password.generatePassword(password, salt);
                 String saltString = Base64.getEncoder().withoutPadding().encodeToString(salt);
 
-                // write to file
                 fw.write(username + ":" + newPassword + ":" + saltString + "\n");
                 saveUser(new User(username));
                 currUser = username;
@@ -200,7 +187,7 @@ public class UserDB implements Serializable{
     /*
      *  Loads users from the DB 
      *  
-     *  @returns HashMap <String, User> - a hashmap of usernames mapped to the 
+     *  @returns HashMap <String, User> - a hashmap of usernames mapped to the
      *                                    user object
      */
     @SuppressWarnings("unchecked")
@@ -246,26 +233,26 @@ public class UserDB implements Serializable{
 
     public static boolean deleteExpense(Expense expense) {
         try {
-            User currentUser = loadUsers().get(currUser); // Load the current user
+            User currentUser = loadUsers().get(currUser);
             if (currentUser != null) {
-                boolean deleted = currentUser.removeExpense(expense); // Delegate to User
+                boolean deleted = currentUser.removeExpense(expense);
                 if (deleted) {
-                    saveUser(currentUser); // Save changes
+                    saveUser(currentUser);
                     return true;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false; // Return false if deletion failed
+        return false;
     }
     
     public static List<Expense> getExpensesByDateRange(String startDate, String endDate) {
-        User currentUser = loadUsers().get(currUser); // Get the current user
+        User currentUser = loadUsers().get(currUser);
         if (currentUser != null) {
             return currentUser.getExpensesByDateRange(startDate, endDate);
         }
-        return new ArrayList<>(); // Return empty list if no user is found
+        return new ArrayList<>();
     }
 
 
@@ -311,22 +298,5 @@ public class UserDB implements Serializable{
     	User user = loadUsers().get(currUser);
     	return user.checkBudgetAlert(month, category);
     }
-    
-//    public static void main(String[] args) {
-//        // For testing: Set a default user
-//        currUser = "geeg"; // Replace with an actual username in your data
-//        // Ensure the user exists in the database
-//        if (!checkUser(currUser)) {
-//            addUser("testUser", "password"); // Add the test user if not present
-//        }
-//
-//        // Test accessing the user's budget
-//        try {
-//            double budget = getBudget(Month.APRIL, Category.FOOD);
-//            System.out.println("Test User Budget for Food in January: " + budget);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }

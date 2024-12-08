@@ -1,6 +1,7 @@
 package Frontend.login_signup_page;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 /**
@@ -22,13 +23,10 @@ public class LSPanel extends JPanel {
      *                 (utilizes CardLayout for panel transitions)
      */
     public LSPanel() {
-        // Set the layout manager to BorderLayout
         setLayout(new BorderLayout());
 
-        // Add the login panel to the WEST region of the BorderLayout
         add(new LoginPanel(), BorderLayout.WEST);
 
-        // Add the signup panel to the EAST region of the BorderLayout
         add(new SignupPanel(), BorderLayout.EAST);
     }
 }

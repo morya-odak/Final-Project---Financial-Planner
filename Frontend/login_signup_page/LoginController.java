@@ -29,22 +29,18 @@ public class LoginController implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand(); // Get the command from the event
+        String command = e.getActionCommand();
 
-        // Parse the command string to determine the action type (login or signup)
-        String[] commands = command.split(":"); // Split the command into parts
+        String[] commands = command.split(":");
 
-        // If the command includes three parts, assume it's a signup attempt (username, password, and additional info)
         if (commands.length == 3) {
-            String username = commands[1]; // Extract the username
-            String password = commands[2]; // Extract the password
+            String username = commands[1];
+            String password = commands[2];
 
-            // Notify observers about an invalid signup attempt by passing username and password
             model.notifyObservers(username + ":" + password);
         }
-        // Otherwise, treat it as a login attempt (username and password are in the command)
         else {
-            model.notifyObservers(command); // Notify observers about the login attempt
+            model.notifyObservers(command);
         }
     }
 
@@ -55,6 +51,6 @@ public class LoginController implements ActionListener {
      * @param observer - the `LoginObserver` to be registered with the model
      */
     public void addObserver(LoginObserver observer) {
-        this.model.registerObserver(observer); // Register the observer with the model
+        this.model.registerObserver(observer);
     }
 }

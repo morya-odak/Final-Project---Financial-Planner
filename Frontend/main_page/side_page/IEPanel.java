@@ -43,18 +43,15 @@ public class IEPanel extends JPanel {
         setBackground(new Color(255, 0, 92));
         setPreferredSize(new Dimension(FinanceGUI.WIDTH / 5, FinanceGUI.HEIGHT / 3));
         
-        // Set fonts for the labels
         EXPORT_LABEL.setFont(FinanceGUI.ENTRY_FONT);
         IMPORT_LABEL.setFont(FinanceGUI.ENTRY_FONT);
 
-        // Add Import button
         GBC.gridx = 0;
         GBC.gridy = 0;
         add(addButton("IMPORT", true), GBC);
         GBC.gridy = 1;
         add(IMPORT_LABEL, GBC);
 
-        // Add Export button
         GBC.gridy = 2;
         add(addButton("EXPORT", false), GBC);
         GBC.gridy = 3;
@@ -76,7 +73,6 @@ public class IEPanel extends JPanel {
         btn.setOpaque(true);
         btn.setBorderPainted(false);
 
-        // Set action based on whether it is import or export
         if (importData) {
             btn.addActionListener(e -> importData());
         } else {
@@ -103,7 +99,6 @@ public class IEPanel extends JPanel {
                     String[] vals = line.split(",");
                     if (vals.length == 4) {
                         try {
-                            // Validate and add the expense
                             ExpenseValidator.validate(vals[0], Category.fromString(vals[1]), Double.parseDouble(vals[2]));
                             Expense e = new Expense(vals[0], Category.fromString(vals[1]), Double.parseDouble(vals[2]), vals[3]);
                             UserDB.addExpense(e);
@@ -117,7 +112,6 @@ public class IEPanel extends JPanel {
                         hasError = true;
                     }
 
-                    // Update import label based on success or error
                     if (hasSuccess && !hasError) {
                         IMPORT_LABEL.setForeground(Color.GREEN);
                         IMPORT_LABEL.setText("SUCCESS IMPORTING DATA");
@@ -161,7 +155,6 @@ public class IEPanel extends JPanel {
                 e.printStackTrace();
             }
 
-            // Update export label based on success or error
             if (error) {
                 EXPORT_LABEL.setForeground(Color.BLUE);
                 EXPORT_LABEL.setText("ERROR");

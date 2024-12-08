@@ -9,13 +9,12 @@ import Backend.Enums.Month;
 
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final String date; // Immutable
-    private final Category category; // Immutable
-    private double amount; // Mutable
-    private String description; // Mutable
+    private final String date;
+    private final Category category;
+    private double amount;
+    private String description;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // Constructor
     public Expense(String date, Category category, double amount, String description) {
         ExpenseValidator.validate(date, category, amount);
         this.date = date;
@@ -24,7 +23,6 @@ public class Expense implements Serializable {
         this.description = description;
     }
 
-    // Getters
     public String getDate() {
         return date;
     }
@@ -45,14 +43,13 @@ public class Expense implements Serializable {
         this.description = newDescription;
     }
 
-    // Check if within date range
     public boolean isWithinDateRange(String startDate, String endDate) {
         LocalDate start = LocalDate.parse(startDate, DATE_FORMATTER);
         LocalDate end = LocalDate.parse(endDate, DATE_FORMATTER);
         LocalDate expenseDate = LocalDate.parse(this.date, DATE_FORMATTER);
 
         return (expenseDate.isEqual(start) || expenseDate.isAfter(start)) &&
-               (expenseDate.isEqual(end) || expenseDate.isBefore(end));
+            (expenseDate.isEqual(end) || expenseDate.isBefore(end));
     }
 
     @Override
@@ -76,8 +73,8 @@ public class Expense implements Serializable {
         }
         Expense expense = (Expense) o;
         return Double.compare(expense.amount, amount) == 0 &&
-               date.equals(expense.date) &&
-               category == expense.category &&
-               (description != null ? description.equals(expense.description) : expense.description == null);
+            date.equals(expense.date) &&
+            category == expense.category &&
+            (description != null ? description.equals(expense.description) : expense.description == null);
     }
 }

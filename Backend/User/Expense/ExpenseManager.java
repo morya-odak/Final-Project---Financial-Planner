@@ -125,7 +125,7 @@ public class ExpenseManager implements Serializable {
                 .filter(expense -> {
                     LocalDate expenseDate = LocalDate.parse(expense.getDate(), formatter);
                     return (expenseDate.isEqual(adjustedStart) || expenseDate.isAfter(adjustedStart)) &&
-                           (expenseDate.isEqual(adjustedEnd) || expenseDate.isBefore(adjustedEnd));
+                        (expenseDate.isEqual(adjustedEnd) || expenseDate.isBefore(adjustedEnd));
                 })
                 .collect(Collectors.collectingAndThen(
                     Collectors.toList(),

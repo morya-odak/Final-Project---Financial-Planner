@@ -1,7 +1,9 @@
 package Frontend.login_signup_page;
 
 import java.awt.Color;
+
 import javax.swing.JLabel;
+
 import Backend.Password;
 
 /**
@@ -30,7 +32,6 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver {
      */
     @Override
     public void newLogin(String val) {
-        // Extract the password from the input string
         String[] vals = val.split(":");
         String password = vals[1];
 
@@ -41,38 +42,31 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver {
         boolean hasNum = false;
         boolean hasSpace = false;
 
-        // Check if the password is invalid
+
         if (!Password.isValid(password)) {
-            // Set the label color to red for invalid password
+
             this.setForeground(Color.BLACK);
             text.append("|");
 
-            // Check if the password length is less than required
             if (password.length() < 12) {
                 text.append("too few characters |");
             }
 
-            // Analyze the password character by character
             for (int i = 0; i < N; i++) {
-                // Check for lowercase letters
                 if (Character.isLowerCase(password.charAt(i))) {
                     hasLower = true;
                 }
-                // Check for uppercase letters
                 else if (Character.isUpperCase(password.charAt(i))) {
                     hasUpper = true;
                 }
-                // Check for numeric characters
                 else if (Character.isDigit(password.charAt(i))) {
                     hasNum = true;
                 }
-                // Check for spaces
                 else if (password.charAt(i) == ' ') {
                     hasSpace = true;
                 }
             }
 
-            // Append missing criteria to the feedback text
             if (!hasLower) {
                 text.append("at least one lower case |");
             }
@@ -86,10 +80,8 @@ public class LoginPasswordLabel extends JLabel implements LoginObserver {
                 text.append("space not allowed |");
             }
 
-            // Update the label with the final feedback text
             this.setText(text.toString());
         } 
-        // If the password is valid, display a success message
         else {
             this.setForeground(Color.BLACK);
             this.setText("Strong password");

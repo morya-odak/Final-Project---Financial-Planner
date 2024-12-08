@@ -1,7 +1,9 @@
 package Frontend.login_signup_page;
 
 import java.awt.Color;
+
 import javax.swing.JLabel;
+
 import Backend.UserDB;
 
 /**
@@ -17,8 +19,8 @@ public class SignupUserLabel extends JLabel implements LoginObserver {
      * This label will display status messages about the username.
      */
     public SignupUserLabel() {
-        super(""); // Initialize with empty text
-        this.setSize(350, 100); // Set the size of the label
+        super("");
+        this.setSize(350, 100);
     }
 
     /**
@@ -28,17 +30,15 @@ public class SignupUserLabel extends JLabel implements LoginObserver {
      * @param val - A string containing the username and password (in the form "username:password")
      */
     public void newLogin(String val) {
-        // Split the input string by ":" to extract username and password
         String[] vals = val.split(":");
         String username = vals[0];
 
-        // Check if the username already exists in the database
         if (UserDB.checkUser(username)) {
-            setText("Username already exists"); // Display a message if the username is already taken
-            setForeground(Color.BLACK); // Set the text color to black
+            setText("Username already exists");
+            setForeground(Color.BLACK);
         } else {
-            setText("Valid username"); // Display a message if the username is valid
-            setForeground(Color.BLACK); // Set the text color to black
+            setText("Valid username");
+            setForeground(Color.BLACK);
         }
     }
 }

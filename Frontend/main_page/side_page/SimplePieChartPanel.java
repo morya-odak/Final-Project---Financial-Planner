@@ -20,9 +20,9 @@ import javax.swing.JPanel;
 public class SimplePieChartPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    private String[] categories = {};  // Array of category names
-    private int[] spendings = {};      // Array of spending amounts for each category
-    private Map<String, Color> categoryColors = new HashMap<>(); // Map for category colors
+    private String[] categories = {};
+    private int[] spendings = {};
+    private Map<String, Color> categoryColors = new HashMap<>(); 
 
     /**
      * Updates the pie chart data with new categories and spending values.
@@ -36,7 +36,6 @@ public class SimplePieChartPanel extends JPanel {
         this.categories = categoriesList;
         this.spendings = spendingsList;
 
-        // Generate or retain colors for each category
         Random random = new Random();
         for (String category : categoriesList) {
             categoryColors.putIfAbsent(
@@ -45,7 +44,6 @@ public class SimplePieChartPanel extends JPanel {
             );
         }
 
-        // Repaint the panel with updated data
         revalidate();
         repaint();
     }
@@ -62,45 +60,36 @@ public class SimplePieChartPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // If there are no categories or spending data, show a placeholder message
         if (categories.length == 0 || spendings.length == 0) {
             g.drawString("Select a month", getWidth() / 2 - 50, getHeight() / 2);
             return;
         }
 
-        // Calculate total spending
         int total = 0;
         for (int spending : spendings) {
             total += spending;
         }
 
-        // Determine the size of the circle (adjust for smaller chart)
         int padding = 150;
-        int diameter = Math.min(getWidth() / 2, getHeight()) - padding; // Adjust for key on the side
+        int diameter = Math.min(getWidth() / 2, getHeight()) - padding; 
         if (diameter < 0) {
-            return; // Prevent drawing if panel size is too small
+            return; 
         }
 
-        int x = 50; // Position chart on the left
+        int x = 50;
         int y = (getHeight() - diameter) / 2;
 
-        // Draw pie chart
         int startAngle = 0;
         for (int i = 0; i < categories.length; i++) {
-            // Calculate the arc angle based on spending proportion
             int arcAngle = (int) Math.round(360.0 * spendings[i] / total);
 
-            // Get color for the category and set it for the pie slice
             g.setColor(categoryColors.get(categories[i]));
 
-            // Draw the pie slice
             g.fillArc(x, y, diameter, diameter, startAngle, arcAngle);
 
-            // Update the start angle for the next slice
             startAngle += arcAngle;
         }
 
-        // Draw the key to the right of the pie chart
         drawKey(g, x + diameter + 20, y);
     }
 
@@ -116,13 +105,10 @@ public class SimplePieChartPanel extends JPanel {
         int boxSize = 20;
         int padding = 10;
 
-        // Draw the legend for each category
         for (int i = 0; i < categories.length; i++) {
-            // Draw color box
             g.setColor(categoryColors.get(categories[i]));
             g.fillRect(x, y + i * (boxSize + padding), boxSize, boxSize);
 
-            // Draw category name next to the color box
             g.setColor(Color.BLACK);
             g.drawString(categories[i], x + boxSize + 10, y + i * (boxSize + padding) + boxSize - 5);
         }

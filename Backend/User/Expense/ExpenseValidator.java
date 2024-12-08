@@ -20,8 +20,8 @@ public class ExpenseValidator {
      * @param category - the category of the expense
      * @param amount - the monetary value of the expense
      * 
-     * @throws IllegalArgumentException if the date format is invalid, the amount is negative,
-     *                                  or the category is invalid
+     * @throws IllegalArgumentException
+     *
      */
     public static void validate(String date, Category category, double amount) {
         if (!isValidDate(date)) {

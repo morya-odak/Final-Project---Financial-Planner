@@ -39,30 +39,26 @@ public class FilterPanel extends JPanel {
      */
     public FilterPanel() {
         setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(FinanceGUI.WIDTH / 5, 250)); // Adjust height as needed
+        setPreferredSize(new Dimension(FinanceGUI.WIDTH / 5, 250));
         setBackground(new Color(255, 0, 92));
 
         GBC.gridx = 0;
         GBC.gridy = 0;
         GBC.fill = GridBagConstraints.HORIZONTAL;
 
-        // Label for feedback
         label = new JLabel("FILTER");
         label.setFont(FinanceGUI.ENTRY_FONT);
         label.setHorizontalAlignment(JLabel.CENTER);
         add(label, GBC);
 
-        // Start date field
         startDateField = makeTextField("START DATE (YYYY-MM-DD)");
         GBC.gridy = 1;
         add(startDateField, GBC);
 
-        // End date field
         endDateField = makeTextField("END DATE (YYYY-MM-DD)");
         GBC.gridy = 2;
         add(endDateField, GBC);
 
-        // Filter by Date button
         JButton filterByDateButton = new JButton("FILTER BY DATE");
         filterByDateButton.setFont(FinanceGUI.ENTRY_FONT);
         filterByDateButton.setBackground(new Color(255, 185, 210));
@@ -75,7 +71,6 @@ public class FilterPanel extends JPanel {
 
         GBC.insets.bottom = 0;
 
-        // Category dropdown
         String[] categories = {"ALL", "FOOD", "TRANSPORTATION", "ENTERTAINMENT", "UTILITIES", "MISCELLANEOUS"};
         categoryDropdown = new JComboBox<>(categories);
         categoryDropdown.setFont(FinanceGUI.ENTRY_FONT);
@@ -84,7 +79,6 @@ public class FilterPanel extends JPanel {
         GBC.gridy = 4;
         add(categoryDropdown, GBC);
 
-        // Filter by Category button
         JButton filterByCategoryButton = new JButton("FILTER BY CATEGORY");
         filterByCategoryButton.setFont(FinanceGUI.ENTRY_FONT);
         filterByCategoryButton.setBackground(new Color(255, 185, 210));
@@ -92,10 +86,9 @@ public class FilterPanel extends JPanel {
         filterByCategoryButton.setBorderPainted(false);
         filterByCategoryButton.addActionListener(e -> handleFilterByCategory());
         GBC.gridy = 5;
-        GBC.insets.bottom = 20; // Add 20px vertical spacing
+        GBC.insets.bottom = 20;
         add(filterByCategoryButton, GBC);
 
-        // Reset Filters button
         JButton resetFiltersButton = new JButton("RESET FILTERS");
         resetFiltersButton.setFont(FinanceGUI.ENTRY_FONT);
         resetFiltersButton.setBackground(new Color(255, 185, 210));
@@ -103,10 +96,9 @@ public class FilterPanel extends JPanel {
         resetFiltersButton.setBorderPainted(false);
         resetFiltersButton.addActionListener(e -> resetFilters());
         GBC.gridy = 6;
-        GBC.insets.bottom = 0; // Reset spacing to avoid affecting future components
+        GBC.insets.bottom = 0;
         add(resetFiltersButton, GBC);
 
-        // Reset insets for future components
         GBC.insets.bottom = 0;
     }
 
@@ -123,7 +115,6 @@ public class FilterPanel extends JPanel {
             String startDate = startDateField.getText();
             String endDate = endDateField.getText();
 
-            // Validate date inputs
             if (!ExpenseValidator.isValidDate(startDate)) {
                 label.setText("INVALID START DATE");
                 label.setForeground(Color.RED);
@@ -135,7 +126,6 @@ public class FilterPanel extends JPanel {
                 return;
             }
 
-            // Fetch filtered expenses
             List<Expense> filteredExpenses = UserDB.getExpensesByDateRange(startDate, endDate);
             ExpenseVisualPanel.populateWithFilteredData(filteredExpenses);
             label.setText("FILTERED BY DATE");
@@ -158,7 +148,6 @@ public class FilterPanel extends JPanel {
         try {
             Category category = Category.fromString((String) categoryDropdown.getSelectedItem());
 
-            // Fetch filtered expenses
             List<Expense> filteredExpenses = UserDB.getExpensesByCategory(category);
             ExpenseVisualPanel.populateWithFilteredData(filteredExpenses);
             label.setText("FILTERED BY CATEGORY");
@@ -176,12 +165,10 @@ public class FilterPanel extends JPanel {
      */
     private void resetFilters() {
         System.out.println("Reset filters button clicked.");
-        // Clear input fields
         startDateField.setText("START DATE (YYYY-MM-DD)");
         endDateField.setText("END DATE (YYYY-MM-DD)");
         categoryDropdown.setSelectedIndex(0);
 
-        // Reset the visual panel to show all expenses
         ExpenseVisualPanel.populateAll();
         label.setText("FILTERS RESET");
         label.setForeground(Color.GREEN);

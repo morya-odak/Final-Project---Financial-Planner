@@ -1,6 +1,5 @@
 package test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -25,10 +24,8 @@ public class PasswordTest {
 
     @Test
     public void testGeneratePassword(){
-        // assume salt is stored
         byte [] salt = Password.generateSalt();
 
-        // ensure two passwords are identical
         try {
             String psswd1 = Password.generatePassword("helloworldY2", salt);
             String psswd2 = Password.generatePassword("helloworldY2", salt);
@@ -37,7 +34,6 @@ public class PasswordTest {
             e.printStackTrace();
         }
 
-        // ensure two passwords are different, same password, different salt
         try {
             byte [] salt1 = Password.generateSalt();
             String psswd2 = Password.generatePassword("helloworldY2", salt);
@@ -47,7 +43,6 @@ public class PasswordTest {
             e.printStackTrace();
         }
 
-        // ensure two passwords are different, different password, same salt
         try {
             String psswd4 = Password.generatePassword("helloworldY2different", salt);
             String psswd5 = Password.generatePassword("helloworldY2", salt);
@@ -56,4 +51,6 @@ public class PasswordTest {
             e.printStackTrace();
         }
     }
+    
+    
 }

@@ -28,24 +28,15 @@ public class ExpensePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private static final GridBagConstraints GBC = new GridBagConstraints();
 
-    // Flags to track which buttons were pressed
-    private boolean datePressed = false;
-    private boolean amountPressed = false;
-    private boolean descriptionPressed = false;
-    private boolean descriptionUpdatePressed = false;
 
-    // Text fields for user input
     private JTextField date;
     private JTextField amount;
     private JTextField description;
     private JTextField descriptionUpdate;
-    private JTextField startDateField;
-    private JTextField endDateField;
 
-    // Dropdown for selecting the category
+
     private JComboBox<String> cb;
 
-    // Label for displaying status messages
     private JLabel label;
 
     /**
@@ -56,33 +47,27 @@ public class ExpensePanel extends JPanel {
         setBackground(new Color(255, 0, 92));
         setPreferredSize(new Dimension(FinanceGUI.WIDTH / 5, FinanceGUI.HEIGHT / 3));
 
-        // Set GridBagConstraints for positioning components
         GBC.gridx = 0;
         GBC.gridy = 0;
         GBC.fill = GridBagConstraints.HORIZONTAL;
 
-        // Add label to the panel
         label = new JLabel();
         label.setFont(FinanceGUI.ENTRY_FONT);
         label.setHorizontalAlignment(JLabel.CENTER);
         add(label, GBC);
 
-        // Add date input field
         date = makeTextField("YYYY-MM-DD");
         GBC.gridy = 1;
         add(date, GBC);
 
-        // Add amount input field
         amount = makeTextField("AMOUNT");
         GBC.gridy = 2;
         add(amount, GBC);
 
-        // Add description input field
         description = makeTextField("DESCRIPTION");
         GBC.gridy = 3;
         add(description, GBC);
 
-        // Add category dropdown
         String[] items = {"FOOD", "TRANSPORTATION", "ENTERTAINMENT", "UTILITIES", "MISCELLANEOUS"};
         cb = new JComboBox<>(items);
         cb.setFont(FinanceGUI.ENTRY_FONT);
@@ -91,12 +76,10 @@ public class ExpensePanel extends JPanel {
         GBC.gridy = 4;
         add(cb, GBC);
 
-        // Add description update input field
         descriptionUpdate = makeTextField("DESCRIPTION UPDATE");
         GBC.gridy = 5;
         add(descriptionUpdate, GBC);
 
-        // Add "ADD" button to the panel
         JButton addExpense = new JButton("ADD");
         addExpense.setFont(FinanceGUI.ENTRY_FONT);
         addExpense.setBackground(new Color(255, 185, 210));
@@ -106,7 +89,6 @@ public class ExpensePanel extends JPanel {
         GBC.gridy = 6;
         add(addExpense, GBC);
 
-        // Add "UPDATE DESCRIPTION" button
         JButton updateDescriptionButton = new JButton("UPDATE DESCRIPTION");
         updateDescriptionButton.setFont(FinanceGUI.ENTRY_FONT);
         updateDescriptionButton.setBackground(new Color(255, 185, 210));
@@ -116,7 +98,6 @@ public class ExpensePanel extends JPanel {
         GBC.gridy = 7;
         add(updateDescriptionButton, GBC);
 
-        // Add "DELETE" button
         JButton deleteExpenseButton = new JButton("DELETE");
         deleteExpenseButton.setFont(FinanceGUI.ENTRY_FONT);
         deleteExpenseButton.setBackground(new Color(255, 185, 210));
@@ -159,20 +140,17 @@ public class ExpensePanel extends JPanel {
     private void handleUpdateDescription() {
         System.out.println("Update Description button clicked.");
         try {
-            // Retrieve input values
             String dateText = date.getText();
             Category category = Category.fromString((String) cb.getSelectedItem());
             double amountValue = Double.parseDouble(amount.getText());
             String oldDescription = description.getText();
             String newDescription = descriptionUpdate.getText();
 
-            // Create an expense object for updating
-            Expense expense = new Expense(dateText, category, amountValue, oldDescription); // Description doesn't matter for matching
-            boolean updated = UserDB.updateExpense(expense, newDescription); // Update the expense
+            Expense expense = new Expense(dateText, category, amountValue, oldDescription);
+            boolean updated = UserDB.updateExpense(expense, newDescription);
 
-            // Provide feedback to the user
             if (updated) {
-                ExpenseVisualPanel.populateTable(category.toString()); // Refresh the table for the specific category
+                ExpenseVisualPanel.populateTable(category.toString());
                 label.setText("UPDATED");
                 label.setForeground(Color.GREEN);
             } else {

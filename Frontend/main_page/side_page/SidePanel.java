@@ -23,22 +23,16 @@ public class SidePanel extends JPanel {
      * FilterPanel, IEPanel) to their respective positions.
      */
     public SidePanel() {
-        // Set preferred size based on the main FinanceGUI dimensions
         setPreferredSize(new Dimension((int) FinanceGUI.WIDTH / 5, FinanceGUI.HEIGHT));
 
-        // Set background color for the panel
         setBackground(new Color(255, 0, 92));
 
-        // Set layout to BorderLayout for arranging components
         setLayout(new BorderLayout());
 
-        // Add ExpensePanel to the north of the panel
         add(new ExpensePanel(), BorderLayout.NORTH);
 
-        // Add FilterPanel to the center of the panel
-        add(new FilterPanel(), BorderLayout.CENTER); // Add the new FilterPanel
+        add(new FilterPanel(), BorderLayout.CENTER);
 
-        // Add IEPanel to the south of the panel
         add(new IEPanel(), BorderLayout.SOUTH);
     }
 }

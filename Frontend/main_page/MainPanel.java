@@ -25,13 +25,10 @@ public class MainPanel extends JPanel {
      * @param None
      */
     public MainPanel() {
-        // Set the layout manager to BorderLayout
         setLayout(new BorderLayout());
 
-        // Add the SidePanel to the WEST of the layout
         add(new SidePanel(), BorderLayout.WEST);
 
-        // Add the ExpenseVisualPanel to the EAST of the layout
         add(new ExpenseVisualPanel(), BorderLayout.EAST);
     }
 }

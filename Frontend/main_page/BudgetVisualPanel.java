@@ -35,13 +35,11 @@ public class BudgetVisualPanel extends JPanel {
         setBackground(new Color(200, 200, 255));
         setLayout(new GridBagLayout());
 
-        // Configure GridBagConstraints
         GBC.gridx = 0;
         GBC.gridy = 0;
         GBC.fill = GridBagConstraints.HORIZONTAL;
         GBC.insets = new java.awt.Insets(10, 0, 10, 0);
 
-        // Create dropdown for months
         String[] months = {
             "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
             "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
@@ -49,10 +47,9 @@ public class BudgetVisualPanel extends JPanel {
         monthDropdown = new JComboBox<>(months);
         monthDropdown.setFont(FinanceGUI.ENTRY_FONT);
         monthDropdown.setBackground(new Color(255, 185, 210));
-        monthDropdown.setSelectedIndex(0); // Default to January
+        monthDropdown.setSelectedIndex(0);
         add(monthDropdown, GBC);
 
-        // Increment GridBagConstraints for the table
         GBC.gridy++;
 
         JTable budgetTable = new JTable(BUDGET_MODEL);
@@ -79,7 +76,7 @@ public class BudgetVisualPanel extends JPanel {
         GBC.gridy++;
         alertLabels = new JLabel[5];
         for (int i = 0; i < alertLabels.length; i++) {
-            alertLabels[i] = new JLabel(" "); // Initially blank
+            alertLabels[i] = new JLabel(" ");
             alertLabels[i].setFont(new Font("Arial", Font.BOLD, 14));
             alertLabels[i].setForeground(Color.RED);
             alertLabels[i].setHorizontalAlignment(SwingConstants.LEFT);
@@ -87,14 +84,12 @@ public class BudgetVisualPanel extends JPanel {
             add(alertLabels[i], GBC);
         }
 
-        // Add ActionListener to the dropdown
         monthDropdown.addActionListener(e -> {
             String selectedMonth = (String) monthDropdown.getSelectedItem();
             Month month = Month.valueOf(selectedMonth.toUpperCase());
             populateTable(month);
         });
 
-        // Increment for the back button
         GBC.gridy++;
         JButton backButton = new JButton("Back to Main Panel");
         backButton.setFont(FinanceGUI.ENTRY_FONT);
@@ -114,19 +109,17 @@ public class BudgetVisualPanel extends JPanel {
     public static void populateTable(Month month) {
         Category[] categories = Category.values();
 
-        // Clear all alert labels
         for (JLabel alertLabel : alertLabels) {
-            alertLabel.setText(" "); // Reset to blank
+            alertLabel.setText(" "); 
         }
 
-        int alertCount = 0; // Track the number of alerts
+        int alertCount = 0; 
         for (int col = 1; col <= categories.length; col++) {
             try {
                 double budget = UserDB.getBudget(month, categories[col - 1]);
                 double spent = UserDB.getTotalSpentByCategoryAndMonth(month, categories[col - 1]);
                 double remaining = budget - spent;
 
-                // Check for budget alerts
                 if (budget > 0 && spent >= 0.8 * budget && alertCount < alertLabels.length) {
                     alertLabels[alertCount].setText(
                         "ALERT: You have spent over 80% of your budget for " + categories[col - 1] + "."

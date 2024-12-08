@@ -31,7 +31,6 @@ public class User implements Serializable {
     /*
      * EXPENSE METHODS
      */
-
     /*
      * Adds an expense to the user's expense manager.
      * 

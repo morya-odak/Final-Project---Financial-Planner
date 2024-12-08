@@ -26,13 +26,10 @@ import Frontend.FinanceGUI;
 public class DropdownPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    // The dropdown menu to select a month.
     private JComboBox<String> monthDropdown;
 
-    // The button to toggle between expense categories.
     private JButton actionButton;
 
-    // The SimplePieChartPanel that will be updated with data.
     private SimplePieChartPanel pieChartPanel;
 
     /**
@@ -43,34 +40,30 @@ public class DropdownPanel extends JPanel {
     public DropdownPanel(SimplePieChartPanel pieChartPanel) {
         this.pieChartPanel = pieChartPanel;
 
-        // Set up the layout for the panel
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new java.awt.Insets(10, 10, 10, 10);
 
-        // Create and configure the dropdown for selecting a month
         String[] months = {
             "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
             "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
         };
         monthDropdown = new JComboBox<>(months);
         monthDropdown.setPreferredSize(new Dimension(200, 30));
-        monthDropdown.addActionListener(e -> updatePieChart());  // Update pie chart when a new month is selected
+        monthDropdown.addActionListener(e -> updatePieChart());
         add(monthDropdown, gbc);
 
-        // Create and configure the button to toggle the expenses
-        gbc.gridx++;  // Move to the next grid column for the button
+        gbc.gridx++;
         actionButton = new JButton(" Toggle Expenses");
         actionButton.setPreferredSize(new Dimension(2000, 30));
-        actionButton.setBackground(new java.awt.Color(70, 130, 180));  // Steel blue color
+        actionButton.setBackground(new java.awt.Color(70, 130, 180));
         actionButton.setForeground(java.awt.Color.WHITE);
         actionButton.setOpaque(true);
         actionButton.setBorderPainted(false);
         add(actionButton, gbc);
         actionButton.addActionListener(e -> {
-            // Change the visible panel to Panel 2 when the button is pressed
             FinanceGUI.CARD_LAYOUT.show(FinanceGUI.CARDS_PANEL, "Panel 2");
         });
     }
@@ -81,19 +74,16 @@ public class DropdownPanel extends JPanel {
      * It fetches the spending data for each expense category and updates the pie chart.
      */
     private void updatePieChart() {
-        // Get the selected month from the dropdown
         String selectedMonth = (String) monthDropdown.getSelectedItem();
-        Month month = Month.valueOf(selectedMonth.toUpperCase());  // Convert the selected month to the Month enum
+        Month month = Month.valueOf(selectedMonth.toUpperCase());
 
-        // Fetch the spending data for each category for the selected month
         String[] categories = { "Food", "Transportation", "Entertainment", "Utilities", "Miscellaneous" };
         int[] spendings = new int[categories.length];
         for (int i = 0; i < categories.length; i++) {
-            Category category = Category.valueOf(categories[i].toUpperCase());  // Convert category to Category enum
-            spendings[i] = (int) UserDB.getTotalSpentByCategoryAndMonth(month, category);  // Get the total spent for the category
+            Category category = Category.valueOf(categories[i].toUpperCase());
+            spendings[i] = (int) UserDB.getTotalSpentByCategoryAndMonth(month, category);
         }
 
-        // Update the pie chart with the new data
         pieChartPanel.updateChart(categories, spendings);
     }
 }

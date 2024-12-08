@@ -43,44 +43,18 @@ public class ExpenseVisualPanel extends JPanel {
         GBC.weightx = 1;
         GBC.weighty = 1;
 
-        // Add tables and populate them
         addTable(FOOD_MODEL, "FOOD");
         addTable(TRANSPORTATION_MODEL, "TRANSPORTATION");
         addTable(ENTERTAINMENT_MODEL, "ENTERTAINMENT");
         addTable(UTILITIES_MODEL, "UTILITIES");
         addTable(MISCELLANEOUS_MODEL, "MISCELLANEOUS");
-
-        // Sorting the data by date button
-//        GBC.gridy = 2;
-//        GBC.weighty = 0;
-//        GBC.gridx = 1;
-//        JTextField a = new JTextField("YYYY-DD-mm");
-//        a.setFont(FinanceGUI.ENTRY_FONT);
-//        a.setForeground(Color.GRAY);
-//        a.setHorizontalAlignment(JTextField.CENTER);
-//        add(a, GBC);
-//
-//        GBC.gridx = 2;
-//        JLabel b = new JLabel("TO");
-//        b.setFont(FinanceGUI.ENTRY_FONT);
-//        b.setHorizontalAlignment(JLabel.CENTER);
-//        add(b, GBC);
-//
-//        GBC.gridx = 3;
-//        JTextField c = new JTextField("YYYY-DD-mm");
-//        c.setFont(FinanceGUI.ENTRY_FONT);
-//        c.setForeground(Color.GRAY);
-//        c.setHorizontalAlignment(JTextField.CENTER);
-//        add(c, GBC);
         
-     // Create and style the button
         budgetButton = new JButton("Toggle Budget");
         budgetButton.setFont(FinanceGUI.ENTRY_FONT);
         budgetButton.setBackground(new Color(200, 100, 150));
         budgetButton.setForeground(Color.WHITE);
         budgetButton.setFocusPainted(false);
 
-        // Add the button to the panel
         MBUTTON.gridx = 4;
         MBUTTON.gridy = 15;
         MBUTTON.fill = GridBagConstraints.HORIZONTAL;
@@ -95,9 +69,7 @@ public class ExpenseVisualPanel extends JPanel {
         });
     }   
 
-    // Adds and populates a table
     private void addTable(DefaultTableModel model, String name) {
-        // add label
         JLabel label = new JLabel(name);
         label.setFont(FinanceGUI.ENTRY_FONT);
         label.setHorizontalAlignment(JLabel.CENTER);
@@ -106,7 +78,6 @@ public class ExpenseVisualPanel extends JPanel {
         GBC.gridy = 0;
         add(label, GBC);
 
-        // add table
         JTable table = new JTable(model);
         styleTable(table);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -119,7 +90,6 @@ public class ExpenseVisualPanel extends JPanel {
         GBC.gridx++;
     }
 
-    // Populates all the tables with the necesssary values
     public static void populateAll(){
         populateTable("FOOD");
         populateTable("TRANSPORTATION");
@@ -128,12 +98,10 @@ public class ExpenseVisualPanel extends JPanel {
         populateTable("MISCELLANEOUS");
     }
 
-    // Populates the table with necessary values
     public static void populateTable(String categoryName) {
         DefaultTableModel model;
         Category category;
 
-        // Determine which model to use based on the category
         switch (categoryName.toUpperCase()) {
             case "FOOD":
                 model = FOOD_MODEL;
@@ -159,10 +127,8 @@ public class ExpenseVisualPanel extends JPanel {
                 throw new IllegalArgumentException("Invalid category: " + categoryName);
         }
 
-        // Clear the table model to prevent duplicates
         model.setRowCount(0);
 
-        // Fetch expenses from UserDB and add them to the table
         List<Expense> expenses = UserDB.getExpensesByCategory(category);
         for (Expense e : expenses) {
             model.addRow(new Object[] { e.getDate(), e.getAmount(), e.getDescription() });
@@ -170,7 +136,6 @@ public class ExpenseVisualPanel extends JPanel {
     }
 
 
-    // Creates a new table model
     private static DefaultTableModel createTable() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("DATE");
@@ -180,14 +145,13 @@ public class ExpenseVisualPanel extends JPanel {
     }
     
     public static void populateWithFilteredData(List<Expense> filteredExpenses) {
-        // Clear all table models
         FOOD_MODEL.setRowCount(0);
         TRANSPORTATION_MODEL.setRowCount(0);
         ENTERTAINMENT_MODEL.setRowCount(0);
         UTILITIES_MODEL.setRowCount(0);
         MISCELLANEOUS_MODEL.setRowCount(0);
 
-        // Add filtered expenses to the appropriate table
+
         for (Expense e : filteredExpenses) {
             DefaultTableModel model;
             switch (e.getCategory()) {
@@ -214,7 +178,6 @@ public class ExpenseVisualPanel extends JPanel {
     }
 
 
-    // Styles the JTable
     private void styleTable(JTable table) {
         table.setBackground(new Color(255, 185, 210));
         table.setFont(new Font("Arial", Font.PLAIN, 12));

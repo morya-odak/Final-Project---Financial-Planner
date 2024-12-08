@@ -41,26 +41,22 @@ public class FinanceGUI extends JFrame {
     public static final int WIDTH = (int) SIZE.getWidth();
     public static final int HEIGHT = (int) SIZE.getHeight();
 
-    // Fonts used in the application for titles, entries, and labels.
     public static Font TITLE_FONT;
     public static Font ENTRY_FONT;
     public static Font LABEL_FONT;
 
-    // Static block for loading custom fonts for the application.
     static {
         try {
-            // Load custom fonts for title, entry, and label text.
-            FileInputStream titleStream = new FileInputStream("src/Frontend/fonts/Poppins-Bold.ttf");
+            FileInputStream titleStream = new FileInputStream("Frontend/fonts/Poppins-Bold.ttf");
             TITLE_FONT = Font.createFont(Font.TRUETYPE_FONT, titleStream).deriveFont(40f);
             titleStream.close();
-            FileInputStream entryStream = new FileInputStream("src/Frontend/fonts/Poppins-Regular.ttf");
+            FileInputStream entryStream = new FileInputStream("Frontend/fonts/Poppins-Regular.ttf");
             ENTRY_FONT = Font.createFont(Font.TRUETYPE_FONT, entryStream).deriveFont(20f);
-            FileInputStream entryStream2 = new FileInputStream("src/Frontend/fonts/Poppins-Regular.ttf");
+            FileInputStream entryStream2 = new FileInputStream("Frontend/fonts/Poppins-Regular.ttf");
             LABEL_FONT = Font.createFont(Font.TRUETYPE_FONT, entryStream2).deriveFont(12f);
             entryStream.close();
             entryStream2.close();
         } catch (Exception e) {
-            // If font loading fails, use default fonts.
             e.printStackTrace();
             TITLE_FONT = new Font("SansSerif", Font.BOLD, 40);
             ENTRY_FONT = new Font("SansSerif", Font.PLAIN, 20);
@@ -79,7 +75,7 @@ public class FinanceGUI extends JFrame {
         setSize(WIDTH, HEIGHT);
         setUp();
         setLayout(new BorderLayout());
-        setResizable(false); // Make the window non-resizable.
+        setResizable(false);
     }
 
     /**
@@ -93,25 +89,20 @@ public class FinanceGUI extends JFrame {
      * - FinanceReportPanel: Panel for displaying financial reports.
      */
     private void setUp() {
-        // Create instances of the different panels.
-        JPanel panel1 = new LSPanel();        // Login/Signup Panel
-        JPanel panel2 = new MainPanel();      // Main Page Panel
-        JPanel panel3 = new BudgetPanel();    // Budget Panel
-        JPanel panel4 = new FinanceReportPanel(); // Financial Report Panel
+        JPanel panel1 = new LSPanel();
+        JPanel panel2 = new MainPanel();
+        JPanel panel3 = new BudgetPanel();
+        JPanel panel4 = new FinanceReportPanel();
 
-        // Optional: Add a label to panel2 for demonstration.
         panel2.add(new JLabel("PANEL 2"));
 
-        // Add panels to the card layout container with unique names.
         CARDS_PANEL.add(panel1, "Panel 1");
         CARDS_PANEL.add(panel2, "Panel 2");
         CARDS_PANEL.add(panel3, "Panel 3");
         CARDS_PANEL.add(panel4, "Panel 4");
 
-        // Add the container panel to the JFrame.
         add(CARDS_PANEL);
 
-        // Set default close operation for the frame.
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Make the frame visible.
         setVisible(true);
